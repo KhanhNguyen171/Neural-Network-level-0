@@ -1,0 +1,127 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Compiled Extensions
+
+*.so
+
+# Distribution
+
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook
+
+.ipynb_checkpoints
+
+# VS Code
+
+.vscode/
+
+# PyCharm
+
+.idea/
+
+# macOS
+
+.DS_Store
+
+# Windows
+
+Thumbs.db
+desktop.ini
+
+# Logs
+
+*.log
+
+# Temporary Files
+
+*.tmp
+*.temp
+
+# Testing
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type Checking
+
+.mypy_cache/
+
+# Ruff
+
+.ruff_cache/
+
+# Data Files
+
+data/raw/
+data/processed/
+
+# Large Datasets
+
+*.csv
+*.parquet
+*.h5
+*.hdf5
+
+# Trained Models
+
+models/
+checkpoints/
+weights/
+
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Generated Figures
+
+outputs/
+results/
+
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# Exception:
+
+!data/sample.jpg
+
+# TensorBoard
+
+runs/
+
+# Cache
+
+.cache/
+
+# NumPy
+
+*.npy
+*.npz
