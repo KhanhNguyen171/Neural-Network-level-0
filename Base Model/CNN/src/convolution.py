@@ -98,13 +98,11 @@ class Convolution2D:
 
         h_out = (
             (height - self.kernel_size + 2 * self.padding)
-            // self.stride
-        ) + 1
+        ) // self.stride + 1
 
         w_out = (
-            (width - self.kernel_size + 2 * self.padding)
-            // self.stride
-        ) + 1
+            (width - self.kernel_size + 2 * self.padding) 
+        ) // self.stride + 1
 
         return h_out, w_out
 
@@ -248,7 +246,7 @@ class Convolution2D:
 
         x_padded = self.apply_padding(x)
 
-        _, height, width = x_padded.shape
+        _, height, width = x.shape
 
         h_out, w_out = self.compute_output_shape(
             height,

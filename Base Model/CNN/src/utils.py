@@ -51,7 +51,7 @@ def load_image(
 
     image = np.asarray(
         image,
-        dtype=np.float32
+        dtype=np.uint8
     )
 
     if grayscale:
@@ -162,6 +162,9 @@ def show_image(
                 image,
                 (1, 2, 0)
             )
+            
+            if img.dtype != np.uint8:
+                img = img / 255.0
 
             plt.imshow(img)
 
@@ -169,7 +172,8 @@ def show_image(
 
         plt.imshow(
             image,
-            cmap="gray"
+            cmap="gray",
+            interpolation="nearest"
         )
 
     else:
