@@ -1,3 +1,23 @@
+"""
+dense.py
+
+CNN From Scratch
+
+Fully Connected Layer
+
+Forward:
+    z = Wx + b
+
+Backward:
+    dW
+    db
+    dX
+
+Author: CNN From Scratch
+"""
+
+from __future__ import annotations
+
 import numpy as np
 
 
@@ -5,139 +25,215 @@ class Dense:
     """
     Fully Connected Layer
 
-    Parameters
-    ----------
-    in_features : int
-        Number of input features.
+    Input:
+        (input_dim,)
 
-    out_features : int
-        Number of neurons.
-
-    activation : str | None
-        relu
-        sigmoid
-        softmax
-        None
+    Output:
+        (output_dim,)
     """
 
     def __init__(
         self,
-        in_features: int,
-        out_features: int,
-        activation: str = None
-    ):
+        input_dim: int,
+        output_dim: int,
+        random_seed: int | None = None
+    ) -> None:
 
-        self.in_features = in_features
-        self.out_features = out_features
-        self.activation_name = activation
+        if random_seed is not None:
+            np.random.seed(random_seed)
 
-        self.weights = None
-        self.bias = None
+        self.input_dim = input_dim
+        self.output_dim = output_dim
 
-        self.initialize()
+        # He Initialization
+        scale = np.sqrt(2.0 / input_dim)
 
-    # ==================================================
-    # INITIALIZATION
-    # ==================================================
-
-    def initialize(self):
-        """
-        Xavier initialization.
-        """
-
-        limit = np.sqrt(6 / (self.in_features + self.out_features))
-
-        self.weights = np.random.uniform(
-            -limit,
-            limit,
-            (self.out_features, self.in_features)
+        self.weights = (
+            np.random.randn(
+                output_dim,
+                input_dim
+            )
+            * scale
         )
 
-        self.bias = np.zeros((self.out_features, 1))
+        self.bias = np.zeros(
+            output_dim
+        )
 
-    # ==================================================
-    # LINEAR
-    # ==================================================
+        # Cache
+        self.input_cache = None
+        self.output_cache = None
 
-    def linear(self, x):
+        # Gradients
+        self.dW = np.zeros_like(
+            self.weights
+        )
+
+        self.db = np.zeros_like(
+            self.bias
+        )
+
+    # Forward
+
+    def forward(
+        self,
+        x: np.ndarray
+    ) -> np.ndarray:
         """
+        Forward Pass
+
         z = Wx + b
 
-        x shape:
-            (in_features, 1)
+        Parameters
+        ----------
+        x : np.ndarray
+            Shape:
+                (input_dim,)
 
-        return:
-            (out_features, 1)
-        """
-
-        return np.dot(self.weights, x) + self.bias
-
-    # ==================================================
-    # ACTIVATIONS
-    # ==================================================
-
-    def relu(self, z):
-
-        return np.maximum(0, z)
-
-    def sigmoid(self, z):
-
-        return 1 / (1 + np.exp(-z))
-
-    def softmax(self, z):
-
-        z = z - np.max(z)
-
-        exp_z = np.exp(z)
-
-        return exp_z / np.sum(exp_z)
-
-    # ==================================================
-    # ACTIVATION SELECTOR
-    # ==================================================
-
-    def activation(self, z):
-
-        if self.activation_name is None:
-            return z
-
-        if self.activation_name == "relu":
-            return self.relu(z)
-
-        if self.activation_name == "sigmoid":
-            return self.sigmoid(z)
-
-        if self.activation_name == "softmax":
-            return self.softmax(z)
-
-        raise ValueError(
-            f"Unsupported activation: {self.activation_name}"
-        )
-
-    # ==================================================
-    # FORWARD
-    # ==================================================
-
-    def forward(self, x):
-        """
-        Forward pass.
-
-        Input:
-            (in_features,)
-            or
-            (in_features,1)
-
-        Output:
-            (out_features,1)
+        Returns
+        -------
+        np.ndarray
+            Shape:
+                (output_dim,)
         """
 
         x = np.asarray(x)
 
-        if x.ndim == 1:
-            x = x.reshape(-1, 1)
+        if x.ndim != 1:
+            raise ValueError(
+                "Dense expects a 1D vector."
+            )
 
-        z = self.linear(x)
+        if x.shape[0] != self.input_dim:
+            raise ValueError(
+                f"Expected input size "
+                f"{self.input_dim}, "
+                f"received {x.shape[0]}"
+            )
 
-        output = self.activation(z)
+        self.input_cache = x
+
+        output = (
+            self.weights @ x
+            + self.bias
+        )
+
+        self.output_cache = output
 
         return output
+
+    # Backward
+
+    def backward(
+        self,
+        grad_output: np.ndarray
+    ) -> np.ndarray:
+        """
+        Compute gradients.
+
+        dW = dZ * x^T
+        db = dZ
+        dX = W^T * dZ
+        """
+
+        if self.input_cache is None:
+            raise RuntimeError(
+                "forward() must be called "
+                "before backward()."
+            )
+
+        grad_output = np.asarray(
+            grad_output
+        )
+
+        # --------------------------
+        # dW
+        # --------------------------
+        self.dW = np.outer(
+            grad_output,
+            self.input_cache
+        )
+
+        # --------------------------
+        # db
+        # --------------------------
+        self.db = grad_output.copy()
+
+        # --------------------------
+        # dX
+        # --------------------------
+        grad_input = (
+            self.weights.T
+            @ grad_output
+        )
+
+        return grad_input
+
+    # SGD Update
+
+    def update(
+        self,
+        learning_rate: float
+    ) -> None:
+        """
+        SGD
+
+        W = W - lr * dW
+        b = b - lr * db
+        """
+
+        self.weights -= (
+            learning_rate
+            * self.dW
+        )
+
+        self.bias -= (
+            learning_rate
+            * self.db
+        )
+
+    # Utilities
+
+    @property
+    def num_parameters(self) -> int:
+
+        return (
+            self.weights.size
+            + self.bias.size
+        )
+
+    def summary(self) -> None:
+
+        print("\nDense")
+        print("-" * 40)
+
+        print(
+            f"Input Dim  : {self.input_dim}"
+        )
+
+        print(
+            f"Output Dim : {self.output_dim}"
+        )
+
+        print(
+            f"Parameters : {self.num_parameters}"
+        )
+
+        print("-" * 40)
+
+    def zero_grad(self) -> None:
+        """
+        Reset gradients.
+        """
+
+        self.dW.fill(0)
+        self.db.fill(0)
+
+    def __repr__(self) -> str:
+
+        return (
+            f"Dense("
+            f"{self.input_dim}, "
+            f"{self.output_dim}"
+            f")"
+        )
