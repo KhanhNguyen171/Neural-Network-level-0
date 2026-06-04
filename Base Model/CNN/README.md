@@ -2,6 +2,8 @@
 
 # Convolutional Neural Network (CNN)
 
+<img src="assets/work_CNN.png">
+
 ## Mục tiêu
 Folder này giúp hiểu cách một mạng CNN xử lý ảnh từ đầu đến cuối bằng cách trực quan hóa từng bước biến đổi dữ liệu.
 
@@ -18,6 +20,7 @@ Thay vì huấn luyện trên hàng nghìn ảnh, chúng ta chỉ sử dụng m�
 9. Fully Connected Layer đưa ra dự đoán cuối cùng
 
 ### CNN Pipeline
+
 ```
 Input Image
       │
@@ -64,6 +67,8 @@ Input Image
       ▼
 Prediction
 ```
+
+<img src="assets/CNN_pipeline.jpg">
 
 ### Kiến trúc tổng quan
 ```
