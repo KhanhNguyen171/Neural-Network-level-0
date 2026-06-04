@@ -99,16 +99,6 @@ weights/
 *.ckpt
 *.onnx
 
-# Generated Figures
-
-outputs/
-results/
-
-*.png
-*.jpg
-*.jpeg
-*.svg
-
 # Exception:
 
 !data/sample.jpg
