@@ -1,64 +1,42 @@
-"""
-convolution.py
-
-CNN From Scratch
-
-Phase A:
-    - Single Channel Convolution
-    - Multi Channel Convolution
-    - Multi Filter Convolution
-    - Padding
-    - Stride
-
-Phase B:
-    - Backpropagation
-    - Gradient Calculation
-
-Author: CNN From Scratch
-"""
-
-from __future__ import annotations
-
 import numpy as np
 
 
 class Convolution2D:
     """
-    2D Convolution Layer
+    Educational CNN Convolution Layer
 
     Input Shape:
         (C, H, W)
 
-    Filters Shape:
-        (F, C, K, K)
-
     Output Shape:
         (F, H_out, W_out)
+
+    Parameters:
+        in_channels
+        out_channels
+        kernel_size
+        stride
+        padding
     """
 
     def __init__(
         self,
-        in_channels: int,
-        out_channels: int,
-        kernel_size: int,
-        stride: int = 1,
-        padding: int = 0,
-        random_seed: int | None = None
-    ) -> None:
-
-        if random_seed is not None:
-            np.random.seed(random_seed)
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        padding=0
+    ):
 
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.kernel_size = kernel_size
-
         self.stride = stride
         self.padding = padding
 
-        # He Initialization
         scale = np.sqrt(
-            2.0 / (in_channels * kernel_size * kernel_size)
+            2.0 /
+            (in_channels * kernel_size * kernel_size)
         )
 
         self.filters = (
@@ -73,269 +51,187 @@ class Convolution2D:
 
         self.bias = np.zeros(out_channels)
 
-        # Cache (Phase B)
+        # caches
+
         self.input_cache = None
         self.output_cache = None
 
-        # Gradients (Phase B)
-        self.d_filters = None
-        self.d_bias = None
+        # gradients
+        # sẽ dùng ở notebook 15
 
-    # Utility Functions
-
-    def compute_output_shape(
-        self,
-        height: int,
-        width: int
-    ) -> tuple[int, int]:
-        """
-        Compute output height and width.
-
-        Formula:
-            Hout = floor((H-K+2P)/S)+1
-            Wout = floor((W-K+2P)/S)+1
-        """
-
-        h_out = (
-            (height - self.kernel_size + 2 * self.padding)
-        ) // self.stride + 1
-
-        w_out = (
-            (width - self.kernel_size + 2 * self.padding) 
-        ) // self.stride + 1
-
-        return h_out, w_out
-
-    def apply_padding(
-        self,
-        x: np.ndarray
-    ) -> np.ndarray:
-        """
-        Apply zero padding.
-
-        Input:
-            (C,H,W)
-
-        Output:
-            (C,H+2P,W+2P)
-        """
-
-        if self.padding == 0:
-            return x
-
-        return np.pad(
-            x,
-            pad_width=(
-                (0, 0),
-                (self.padding, self.padding),
-                (self.padding, self.padding)
-            ),
-            mode="constant"
+        self.d_filters = np.zeros_like(
+            self.filters
         )
 
-    # Single Channel Convolution
+        self.db = np.zeros_like(
+            self.bias
+        )
 
-    @staticmethod
-    def convolve_single_channel(
-        image: np.ndarray,
-        kernel: np.ndarray,
-        stride: int = 1
-    ) -> np.ndarray:
+    def forward(self, x):
         """
-        Convolution on one channel.
-
-        image:
-            (H,W)
-
-        kernel:
-            (K,K)
+        x shape:
+            (C, H, W)
         """
-
-        h, w = image.shape
-        k = kernel.shape[0]
-
-        h_out = ((h - k) // stride) + 1
-        w_out = ((w - k) // stride) + 1
-
-        output = np.zeros((h_out, w_out))
-
-        for row in range(h_out):
-            for col in range(w_out):
-
-                r = row * stride
-                c = col * stride
-
-                region = image[
-                    r:r + k,
-                    c:c + k
-                ]
-
-                output[row, col] = np.sum(
-                    region * kernel
-                )
-
-        return output
-
-    # Multi Channel Convolution
-
-    def convolve_multi_channel(
-        self,
-        x: np.ndarray,
-        kernel: np.ndarray
-    ) -> np.ndarray:
-        """
-        Multi-channel convolution.
-
-        x:
-            (C,H,W)
-
-        kernel:
-            (C,K,K)
-
-        Output:
-            (Hout,Wout)
-        """
-
-        channels = x.shape[0]
-
-        result = None
-
-        for c in range(channels):
-
-            conv = self.convolve_single_channel(
-                x[c],
-                kernel[c],
-                self.stride
-            )
-
-            if result is None:
-                result = conv
-            else:
-                result += conv
-
-        return result
-
-    # Forward
-
-    def forward(
-        self,
-        x: np.ndarray
-    ) -> np.ndarray:
-        """
-        Forward Propagation
-
-        Input:
-            (C,H,W)
-
-        Output:
-            (F,Hout,Wout)
-        """
-
-        if x.ndim != 3:
-            raise ValueError(
-                "Input must have shape (C,H,W)"
-            )
-
-        if x.shape[0] != self.in_channels:
-            raise ValueError(
-                f"Expected {self.in_channels} channels, "
-                f"received {x.shape[0]}"
-            )
 
         self.input_cache = x
 
-        x_padded = self.apply_padding(x)
+        channels, height, width = x.shape
 
-        _, height, width = x.shape
+        k = self.kernel_size
+        s = self.stride
+        p = self.padding
 
-        h_out, w_out = self.compute_output_shape(
-            height,
-            width
-        )
+        if p > 0:
+
+            x_padded = np.pad(
+                x,
+                (
+                    (0, 0),
+                    (p, p),
+                    (p, p)
+                ),
+                mode="constant"
+            )
+
+        else:
+
+            x_padded = x
+
+        out_height = (
+            (height - k + 2 * p)
+            // s
+        ) + 1
+
+        out_width = (
+            (width - k + 2 * p)
+            // s
+        ) + 1
 
         output = np.zeros(
             (
                 self.out_channels,
-                h_out,
-                w_out
+                out_height,
+                out_width
             )
         )
 
-        for f in range(self.out_channels):
+        for f in range(
+            self.out_channels
+        ):
 
-            output[f] = (
-                self.convolve_multi_channel(
-                    x_padded,
-                    self.filters[f]
-                )
-                + self.bias[f]
-            )
+            kernel = self.filters[f]
+
+            for i in range(
+                out_height
+            ):
+
+                for j in range(
+                    out_width
+                ):
+
+                    h_start = i * s
+                    h_end = h_start + k
+
+                    w_start = j * s
+                    w_end = w_start + k
+
+                    region = x_padded[
+                        :,
+                        h_start:h_end,
+                        w_start:w_end
+                    ]
+
+                    output[
+                        f,
+                        i,
+                        j
+                    ] = (
+                        np.sum(
+                            region * kernel
+                        )
+                        + self.bias[f]
+                    )
 
         self.output_cache = output
 
         return output
 
-    # Information
-
-    @property
-    def num_parameters(self) -> int:
-        """
-        Total trainable parameters.
-        """
-
-        return (
-            self.filters.size
-            + self.bias.size
-        )
-
-    def summary(self) -> None:
-        """
-        Print layer information.
-        """
-
-        print("\nConvolution2D")
-        print("-" * 40)
-
-        print(
-            f"In Channels : {self.in_channels}"
-        )
-        print(
-            f"Out Channels: {self.out_channels}"
-        )
-        print(
-            f"Kernel Size : {self.kernel_size}"
-        )
-        print(
-            f"Stride      : {self.stride}"
-        )
-        print(
-            f"Padding     : {self.padding}"
-        )
-
-        print(
-            f"Parameters  : {self.num_parameters}"
-        )
-
-        print("-" * 40)
-
-    # Phase B
-
     def backward(
         self,
-        grad_output: np.ndarray
-    ) -> np.ndarray:
+        grad_output
+    ):
         """
-        Backpropagation
+        Notebook 15:
+            Conv Backward
 
-        Notebook:
-            15_conv_backward.ipynb
+        Will compute:
 
-        To implement later:
             d_filters
-            d_bias
+            db
             d_input
         """
 
         raise NotImplementedError(
-            "Implemented in Phase B"
+            "Implement in notebook 15."
+        )
+
+    def zero_grad(self):
+
+        self.d_filters.fill(0)
+
+        self.db.fill(0)
+
+    def parameters(self):
+
+        return [
+            (
+                self.filters,
+                self.d_filters
+            ),
+            (
+                self.bias,
+                self.db
+            )
+        ]
+
+    def summary(self):
+
+        print(
+            "Convolution2D Layer"
+        )
+
+        print(
+            f"Input Channels : {self.in_channels}"
+        )
+
+        print(
+            f"Output Channels: {self.out_channels}"
+        )
+
+        print(
+            f"Kernel Size    : {self.kernel_size}"
+        )
+
+        print(
+            f"Stride         : {self.stride}"
+        )
+
+        print(
+            f"Padding        : {self.padding}"
+        )
+
+        print(
+            f"Filters Shape  : {self.filters.shape}"
+        )
+
+    def __repr__(self):
+
+        return (
+            f"Convolution2D("
+            f"{self.in_channels}, "
+            f"{self.out_channels}, "
+            f"kernel_size={self.kernel_size}, "
+            f"stride={self.stride}, "
+            f"padding={self.padding}"
+            f")"
         )

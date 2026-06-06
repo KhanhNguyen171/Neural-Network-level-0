@@ -3,23 +3,27 @@ activation.py
 
 CNN From Scratch
 
-Activation Functions:
-    - ReLU
-    - Sigmoid
-    - Tanh
-    - Softmax
+Activation Functions
+
+- ReLU
+- Sigmoid
+- Tanh
+- Softmax
 
 All activations support:
-    - forward()
-    - backward()
 
-Author: CNN From Scratch
+- forward()
+- backward()
+- parameters()
+- zero_grad()
 """
 
 from __future__ import annotations
 
 import numpy as np
 
+
+# ReLU
 
 class ReLU:
     """
@@ -56,6 +60,12 @@ class ReLU:
         grad_output: np.ndarray
     ) -> np.ndarray:
 
+        if self.input_cache is None:
+            raise RuntimeError(
+                "forward() must be called "
+                "before backward()."
+            )
+
         grad_input = grad_output.copy()
 
         grad_input[
@@ -64,13 +74,27 @@ class ReLU:
 
         return grad_input
 
+    def parameters(self):
+
+        return []
+
+    def zero_grad(self):
+
+        pass
+
+    def __repr__(self):
+
+        return "ReLU()"
+
+
+# Sigmoid
 
 class Sigmoid:
     """
     Sigmoid Activation
 
     Forward:
-        σ(x) = 1 / (1 + e^-x)
+        σ(x)
 
     Backward:
         σ(x)(1-σ(x))
@@ -86,11 +110,21 @@ class Sigmoid:
         x: np.ndarray
     ) -> np.ndarray:
 
+        x = np.clip(
+            x,
+            -500,
+            500
+        )
+
         self.input_cache = x
 
         output = (
-            1.0 /
-            (1.0 + np.exp(-x))
+            1.0
+            /
+            (
+                1.0
+                + np.exp(-x)
+            )
         )
 
         self.output_cache = output
@@ -102,16 +136,36 @@ class Sigmoid:
         grad_output: np.ndarray
     ) -> np.ndarray:
 
+        if self.output_cache is None:
+            raise RuntimeError(
+                "forward() must be called "
+                "before backward()."
+            )
+
         sigmoid = self.output_cache
 
         grad_input = (
-            grad_output *
-            sigmoid *
-            (1.0 - sigmoid)
+            grad_output
+            * sigmoid
+            * (1.0 - sigmoid)
         )
 
         return grad_input
 
+    def parameters(self):
+
+        return []
+
+    def zero_grad(self):
+
+        pass
+
+    def __repr__(self):
+
+        return "Sigmoid()"
+
+
+# Tanh
 
 class Tanh:
     """
@@ -147,13 +201,36 @@ class Tanh:
         grad_output: np.ndarray
     ) -> np.ndarray:
 
+        if self.output_cache is None:
+            raise RuntimeError(
+                "forward() must be called "
+                "before backward()."
+            )
+
         grad_input = (
-            grad_output *
-            (1 - self.output_cache ** 2)
+            grad_output
+            * (
+                1.0
+                - self.output_cache ** 2
+            )
         )
 
         return grad_input
 
+    def parameters(self):
+
+        return []
+
+    def zero_grad(self):
+
+        pass
+
+    def __repr__(self):
+
+        return "Tanh()"
+
+
+# Softmax
 
 class Softmax:
     """
@@ -163,11 +240,15 @@ class Softmax:
         e^zi / Σ e^zj
 
     Backward:
-        Full Jacobian implementation
+        Full Jacobian
 
-    Notes:
-        In practice, Softmax is usually
-        combined with Cross Entropy Loss.
+    Notes
+    -----
+    Educational implementation.
+
+    For training classification models,
+    prefer SoftmaxCrossEntropy in
+    losses.py
     """
 
     def __init__(self) -> None:
@@ -182,16 +263,22 @@ class Softmax:
 
         self.input_cache = x
 
-        shifted = x - np.max(
-            x,
-            axis=-1,
-            keepdims=True
+        shifted = (
+            x
+            - np.max(
+                x,
+                axis=-1,
+                keepdims=True
+            )
         )
 
-        exp_values = np.exp(shifted)
+        exp_values = np.exp(
+            shifted
+        )
 
         output = (
-            exp_values /
+            exp_values
+            /
             np.sum(
                 exp_values,
                 axis=-1,
@@ -208,56 +295,68 @@ class Softmax:
         grad_output: np.ndarray
     ) -> np.ndarray:
         """
-        Generic Jacobian-based backward.
+        Jacobian-based backward.
 
-        Useful for learning purposes.
+        Useful for learning.
         """
 
-        probabilities = self.output_cache
-
-        grad_input = np.zeros_like(
-            probabilities
-        )
-
-        if probabilities.ndim == 1:
-
-            probabilities = probabilities.reshape(
-                -1,
-                1
+        if self.output_cache is None:
+            raise RuntimeError(
+                "forward() must be called "
+                "before backward()."
             )
+
+        probs = self.output_cache
+
+        if probs.ndim == 1:
+
+            p = probs.reshape(-1)
 
             jacobian = (
-                np.diagflat(probabilities)
+                np.diag(p)
                 -
-                probabilities @ probabilities.T
+                np.outer(p, p)
             )
 
-            grad_input = (
-                jacobian @ grad_output
+            return (
+                jacobian
+                @ grad_output
             )
 
-            return grad_input
+        grad_input = np.zeros_like(
+            probs
+        )
 
-        batch_size = probabilities.shape[0]
+        batch_size = probs.shape[0]
 
         for i in range(batch_size):
 
-            p = probabilities[i].reshape(
-                -1,
-                1
-            )
+            p = probs[i]
 
             jacobian = (
-                np.diagflat(p)
+                np.diag(p)
                 -
-                p @ p.T
+                np.outer(p, p)
             )
 
             grad_input[i] = (
-                jacobian @ grad_output[i]
+                jacobian
+                @ grad_output[i]
             )
 
         return grad_input
+
+    def parameters(self):
+
+        return []
+
+    def zero_grad(self):
+
+        pass
+
+    def __repr__(self):
+
+        return "Softmax()"
 
 
 # Factory
@@ -268,8 +367,11 @@ def get_activation(
     """
     Activation Factory
 
-    Example:
-        relu = get_activation("relu")
+    Example
+    -------
+    relu = get_activation(
+        "relu"
+    )
     """
 
     name = name.lower()

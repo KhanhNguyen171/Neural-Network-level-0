@@ -3,8 +3,6 @@ utils.py
 
 Utility Functions
 for CNN From Scratch
-
-Author: CNN From Scratch
 """
 
 from __future__ import annotations

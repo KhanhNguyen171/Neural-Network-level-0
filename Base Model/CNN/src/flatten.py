@@ -10,8 +10,6 @@ Forward:
 
 Backward:
     (N) -> (C, H, W)
-
-Author: CNN From Scratch
 """
 
 from __future__ import annotations
@@ -46,9 +44,7 @@ class Flatten:
         # dùng cho backward
         self.original_shape = None
 
-    # =====================================
     # Forward
-    # =====================================
 
     def forward(
         self,
@@ -79,9 +75,7 @@ class Flatten:
 
         return output
 
-    # =====================================
     # Backward
-    # =====================================
 
     def backward(
         self,
@@ -112,9 +106,7 @@ class Flatten:
 
         return grad_input
 
-    # =====================================
     # Utilities
-    # =====================================
 
     @property
     def output_size(self) -> int:

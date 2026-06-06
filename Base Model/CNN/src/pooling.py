@@ -6,8 +6,6 @@ CNN From Scratch
 Pooling Layers:
     - MaxPooling2D
     - AveragePooling2D
-
-Author: CNN From Scratch
 """
 
 from __future__ import annotations

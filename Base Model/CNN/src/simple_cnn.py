@@ -3,8 +3,6 @@ simple_cnn.py
 
 CNN From Scratch
 
-Simple CNN Architecture
-
 Image
  ↓
 Conv
@@ -18,8 +16,6 @@ Flatten
 Dense
  ↓
 Softmax
-
-Author: CNN From Scratch
 """
 
 from __future__ import annotations
@@ -34,25 +30,6 @@ from .dense import Dense
 
 
 class SimpleCNN:
-    """
-    A minimal CNN for educational purposes.
-
-    Architecture:
-
-    Input
-        ↓
-    Conv
-        ↓
-    ReLU
-        ↓
-    Pool
-        ↓
-    Flatten
-        ↓
-    Dense
-        ↓
-    Softmax
-    """
 
     def __init__(
         self,
@@ -62,7 +39,7 @@ class SimpleCNN:
         kernel_size: int = 3,
         pool_size: int = 2,
         random_seed: int | None = None
-    ) -> None:
+    ):
 
         channels, height, width = input_shape
 
@@ -73,8 +50,7 @@ class SimpleCNN:
             out_channels=num_filters,
             kernel_size=kernel_size,
             stride=1,
-            padding=1,
-            random_seed=random_seed
+            padding=1
         )
 
         self.relu = ReLU()
@@ -86,7 +62,7 @@ class SimpleCNN:
 
         self.flatten = Flatten()
 
-        # Compute Dense Input Size
+        # Calculate Flatten Size
 
         conv_h = (
             (height - kernel_size + 2)
@@ -135,15 +111,6 @@ class SimpleCNN:
         self,
         x: np.ndarray
     ) -> np.ndarray:
-        """
-        Forward Pass
-
-        Input:
-            (C,H,W)
-
-        Output:
-            probabilities
-        """
 
         x = self.conv.forward(x)
 
@@ -164,23 +131,39 @@ class SimpleCNN:
 
         return probabilities
 
+    # Forward Logits
+
+    def forward_logits(
+        self,
+        x: np.ndarray
+    ) -> np.ndarray:
+
+        x = self.conv.forward(x)
+
+        x = self.relu.forward(x)
+
+        x = self.pool.forward(x)
+
+        x = self.flatten.forward(x)
+
+        logits = self.dense.forward(x)
+
+        self.logits = logits
+
+        return logits
+
     # Prediction
 
     def predict(
         self,
         x: np.ndarray
     ) -> int:
-        """
-        Predict class index.
-        """
 
         probabilities = self.forward(x)
 
         return int(
             np.argmax(probabilities)
         )
-
-    # Top-K Prediction
 
     def predict_proba(
         self,
@@ -189,9 +172,31 @@ class SimpleCNN:
 
         return self.forward(x)
 
+    # Optimizer Support
+
+    def parameters(self):
+
+        params = []
+
+        params.extend(
+            self.conv.parameters()
+        )
+
+        params.extend(
+            self.dense.parameters()
+        )
+
+        return params
+
+    def zero_grad(self):
+
+        self.conv.zero_grad()
+
+        self.dense.zero_grad()
+
     # Summary
 
-    def summary(self) -> None:
+    def summary(self):
 
         print("\n" + "=" * 50)
         print("SimpleCNN")
@@ -199,18 +204,29 @@ class SimpleCNN:
 
         self.conv.summary()
 
+        print()
+
         self.pool.summary()
+
+        print()
 
         self.dense.summary()
 
-        total_params = (
-            self.conv.num_parameters
-            + self.dense.num_parameters
-        )
+        try:
 
-        print("\nTotal Parameters")
-        print("-" * 50)
-        print(total_params)
+            total_params = (
+                self.conv.num_parameters
+                + self.dense.num_parameters
+            )
+
+            print("\nTotal Parameters")
+            print("-" * 50)
+            print(total_params)
+
+        except AttributeError:
+
+            pass
+
         print("=" * 50)
 
     # Phase B
@@ -218,56 +234,49 @@ class SimpleCNN:
     def backward(
         self,
         grad_output: np.ndarray
-    ) -> None:
-        """
-        Notebook 16
-
-        Backpropagation order:
-
-        Dense
-            ↓
-        Flatten
-            ↓
-        Pool
-            ↓
-        ReLU
-            ↓
-        Conv
-        """
+    ):
 
         raise NotImplementedError(
-            "Implemented in notebook 16"
+            "Implemented in notebook 16."
         )
 
     def update(
         self,
         learning_rate: float
-    ) -> None:
-        """
-        Update trainable parameters.
+    ):
 
-        Notebook 16
-        """
 
         self.dense.update(
             learning_rate
         )
 
-        # Conv update sẽ được thêm
-        # sau khi triển khai
-        # convolution backward.
 
     # Utility
 
     @property
-    def num_parameters(self) -> int:
+    def num_parameters(self):
 
-        return (
-            self.conv.num_parameters
-            + self.dense.num_parameters
-        )
+        total = 0
 
-    def __repr__(self) -> str:
+        if hasattr(
+            self.conv,
+            "num_parameters"
+        ):
+            total += (
+                self.conv.num_parameters
+            )
+
+        if hasattr(
+            self.dense,
+            "num_parameters"
+        ):
+            total += (
+                self.dense.num_parameters
+            )
+
+        return total
+
+    def __repr__(self):
 
         return (
             f"SimpleCNN("

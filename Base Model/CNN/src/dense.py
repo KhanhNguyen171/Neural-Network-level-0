@@ -12,8 +12,6 @@ Backward:
     dW
     db
     dX
-
-Author: CNN From Scratch
 """
 
 from __future__ import annotations
@@ -57,12 +55,16 @@ class Dense:
         )
 
         self.bias = np.zeros(
-            output_dim
+            output_dim,
+            dtype=np.float64
         )
 
         # Cache
         self.input_cache = None
         self.output_cache = None
+        
+        # For backward visualization 
+        self.grad_input_cache = None
 
         # Gradients
         self.dW = np.zeros_like(
@@ -97,7 +99,7 @@ class Dense:
                 (output_dim,)
         """
 
-        x = np.asarray(x)
+        x = np.asarray(x, dtype=np.float64)
 
         if x.ndim != 1:
             raise ValueError(
@@ -134,6 +136,22 @@ class Dense:
         dW = dZ * x^T
         db = dZ
         dX = W^T * dZ
+        
+        Parameters 
+        ---------- 
+        grad_output : np.ndarray 
+            dL/dZ 
+            
+            Shape: 
+                (output_dim,) 
+        
+        Returns 
+        ------- 
+        np.ndarray 
+            dL/dX 
+            
+            Shape: 
+                (input_dim,)
         """
 
         if self.input_cache is None:
@@ -143,8 +161,20 @@ class Dense:
             )
 
         grad_output = np.asarray(
-            grad_output
+            grad_output,
+            dtype=np.float64
         )
+        
+        if grad_output.ndim != 1: 
+            raise ValueError( "grad_output must be 1D." )
+        
+        if grad_output.shape[0] != self.output_dim: 
+            raise ValueError( 
+                f"Expected gradient size " 
+                f"{self.output_dim}, " 
+                f"received " 
+                f"{grad_output.shape[0]}" 
+            )
 
         # --------------------------
         # dW
@@ -165,6 +195,10 @@ class Dense:
         grad_input = (
             self.weights.T
             @ grad_output
+        )
+        
+        self.grad_input_cache = ( 
+            grad_input 
         )
 
         return grad_input
@@ -191,6 +225,25 @@ class Dense:
             learning_rate
             * self.db
         )
+        
+    # Parameter API
+    def parameters(self): 
+        """ 
+        Returns trainable parameters. 
+        
+        Useful for future optimizers. 
+        """ 
+        
+        return [ 
+            ( 
+                self.weights, 
+                self.dW 
+            ), 
+            ( 
+                self.bias, 
+                self.db 
+            ) 
+        ]
 
     # Utilities
 
