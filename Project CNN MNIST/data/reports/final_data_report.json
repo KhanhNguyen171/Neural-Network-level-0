@@ -1,0 +1,37 @@
+{
+    "overview": {
+        "dataset_name": "MNIST",
+        "num_classes": 10,
+        "image_shape": [
+            28,
+            28
+        ],
+        "train_samples": 54000,
+        "valid_samples": 6000,
+        "test_samples": 10000
+    },
+    "statistics": {
+        "train_mean": 0.13073687255382538,
+        "train_std": 0.30819037556648254,
+        "train_min": 0.0,
+        "train_max": 1.0
+    },
+    "quality_checks": {
+        "missing_values": false,
+        "shape_consistency": true,
+        "label_consistency": true,
+        "normalization_applied": true,
+        "stratified_split": true
+    },
+    "pipeline_summary": {
+        "pipeline_steps": [
+            "Data Ingestion",
+            "Data Validation",
+            "Data Profiling",
+            "Data Preprocessing",
+            "Train Validation Split",
+            "Final Dataset Report"
+        ],
+        "pipeline_status": "SUCCESS"
+    }
+}

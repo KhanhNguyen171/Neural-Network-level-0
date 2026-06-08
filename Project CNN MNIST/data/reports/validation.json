@@ -1,0 +1,10 @@
+{
+    "dataset_exists": true,
+    "sample_count_valid": true,
+    "shape_valid": true,
+    "label_valid": true,
+    "pixel_range_valid": true,
+    "missing_samples": 0,
+    "corrupted_samples": 0,
+    "overall_status": true
+}

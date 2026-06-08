@@ -1,0 +1,23 @@
+{
+    "input_dtype": "uint8",
+    "output_dtype": "float32",
+    "normalization": "divide_by_255",
+    "pixel_range_before": [
+        0,
+        255
+    ],
+    "pixel_range_after": [
+        0.0,
+        1.0
+    ],
+    "train_shape": [
+        60000,
+        28,
+        28
+    ],
+    "test_shape": [
+        10000,
+        28,
+        28
+    ]
+}

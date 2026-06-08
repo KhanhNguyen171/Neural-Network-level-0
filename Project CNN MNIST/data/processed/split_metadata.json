@@ -1,0 +1,22 @@
+{
+    "random_state": 42,
+    "validation_size": 0.1,
+    "train_samples": 54000,
+    "validation_samples": 6000,
+    "test_samples": 10000,
+    "train_shape": [
+        54000,
+        28,
+        28
+    ],
+    "validation_shape": [
+        6000,
+        28,
+        28
+    ],
+    "test_shape": [
+        10000,
+        28,
+        28
+    ]
+}

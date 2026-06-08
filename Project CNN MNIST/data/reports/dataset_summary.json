@@ -1,0 +1,25 @@
+{
+    "dataset": "MNIST",
+    "train_samples": 60000,
+    "test_samples": 10000,
+    "image_height": 28,
+    "image_width": 28,
+    "channels": 1,
+    "num_classes": 10,
+    "pixel_min": 0,
+    "pixel_max": 255,
+    "pixel_mean": 33.318421449829934,
+    "pixel_std": 78.56748998339798,
+    "class_distribution": {
+        "0": 5923,
+        "1": 6742,
+        "2": 5958,
+        "3": 6131,
+        "4": 5842,
+        "5": 5421,
+        "6": 5918,
+        "7": 6265,
+        "8": 5851,
+        "9": 5949
+    }
+}

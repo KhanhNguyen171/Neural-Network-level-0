@@ -1,0 +1,6 @@
+{
+    "dataset": "MNIST",
+    "status": "downloaded",
+    "train_samples": 60000,
+    "test_samples": 10000
+}
