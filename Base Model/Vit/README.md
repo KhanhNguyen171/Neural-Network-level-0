@@ -4,6 +4,10 @@
 
 ---
 
+Bạn có thể học tập và tìm hiểu thêm từ người phát hành trên github là: https://github.com/lucidrains/vit-pytorch
+
+---
+
 ## 1. Giới thiệu
 
 __Vision Transformer (ViT)__ là mô hình đầu tiên áp dụng thành công Transformer thuần túy cho bài toán phân loại ảnh. Thay vì dùng các __tầng tích chập (CNN)__, ViT chia ảnh thành các mảnh (patches), xem mỗi mảnh như một token, và xử lý bằng bộ mã hóa Transformer (encoder). Khi được huấn luyện trên tập dữ liệu đủ lớn (như ImageNet-21k, JFT-300M), ViT đạt hoặc vượt hiệu suất của các mô hình CNN hàng đầu.

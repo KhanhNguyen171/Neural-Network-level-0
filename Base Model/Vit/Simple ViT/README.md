@@ -195,7 +195,16 @@ AdamW tách weight decay khỏi gradient giúp tối ưu hóa ổn định hơn 
 
 **Tài liệu tham khảo**
 
-- Lucas Beyer, Xiaohua Zhai, Alexander Kolesnikov. (2022). _Better plain ViT baselines for ImageNet-1k_. Link: https://arxiv.org/pdf/2205.01580
+```bibtex
+@misc{Beyer2022BetterPlainViT
+    title     = {Better plain ViT baselines for ImageNet-1k},
+    author    = {Beyer, Lucas and Zhai, Xiaohua and Kolesnikov, Alexander},
+    publisher = {arXiv},
+    year      = {2022},
+    Link: [https://arxiv.org/pdf/2205.01580]
+}
+
+```
 
 ---
 
