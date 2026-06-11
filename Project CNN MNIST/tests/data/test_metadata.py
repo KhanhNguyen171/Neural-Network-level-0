@@ -8,7 +8,7 @@ from src.data.schemas import (
     ValidationReportSchema,
 )
 
-# pytest tests/data/test_metadata.py
+# pytest tests/data/test_metadata.py -v
 
 # Fixtures
 
