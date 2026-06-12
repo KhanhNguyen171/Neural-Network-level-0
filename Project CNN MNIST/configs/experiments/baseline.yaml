@@ -1,0 +1,9 @@
+experiment:
+name: baseline
+
+model:
+hidden_features: 128
+
+training:
+epochs: 20
+lr: 0.001

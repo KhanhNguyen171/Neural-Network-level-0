@@ -1,0 +1,11 @@
+logging:
+log_dir: artifacts/logs
+
+level: INFO
+
+save_history: true
+save_metrics: true
+
+tensorboard:
+enabled: true
+log_dir: artifacts/tensorboard

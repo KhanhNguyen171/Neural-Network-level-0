@@ -1,0 +1,10 @@
+experiment:
+name: debug
+
+training:
+epochs: 2
+
+data:
+batch_size: 8
+
+# python train.py --config configs/experiments/debug.yaml
