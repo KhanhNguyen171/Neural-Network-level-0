@@ -1,0 +1,28 @@
+experiment:
+  name: cnn_large
+
+data:
+  data_dir: data/processed
+  batch_size: 32
+  num_workers: 0
+
+model:
+  name: mnist_cnn
+  num_classes: 10
+  hidden_features: 256
+
+training:
+  epochs: 30
+  loss: cross_entropy
+  patience: 10
+
+optimizer:
+  name: adam
+  lr: 0.0005
+  weight_decay: 0.00001
+
+scheduler:
+  name: none
+
+artifacts:
+  checkpoint_dir: artifacts/checkpoints

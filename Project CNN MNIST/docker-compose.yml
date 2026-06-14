@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Main training service
+  mnist-training:
+    build:
+      context: .
+      dockerfile: Docker/Dockerfile
+    container_name: mnist-cnn-training
+    image: mnist-cnn:latest
+    volumes:
+      - .:/workspace
+      - ./data:/workspace/data
+      - ./artifacts:/workspace/artifacts
+      - ./notebooks:/workspace/notebooks
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTHONUNBUFFERED=1
+      - DATA_DIR=/workspace/data
+    ports:
+      - "8888:8888"  # Jupyter Lab
+      - "5000:5000"  # Flask/API
+      - "8000:8000"  # FastAPI
+    stdin_open: true
+    tty: true
+    networks:
+      - mnist-network
+    command: >
+      bash -c "
+        echo '🚀 MNIST CNN Training Environment Started' &&
+        echo 'Available commands:' &&
+        echo '  - python -m scripts.train --config configs/experiments/baseline.yaml' &&
+        echo '  - python -m scripts.evaluate --checkpoint artifacts/checkpoints/last.pt --config configs/experiments/baseline.yaml' &&
+        echo '  - jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root' &&
+        exec jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+      "
+
+  # Tensorboard service
+  tensorboard:
+    build:
+      context: .
+      dockerfile: Docker/Dockerfile
+    container_name: mnist-tensorboard
+    image: mnist-cnn:latest
+    volumes:
+      - ./artifacts/logs:/workspace/artifacts/logs:ro
+    ports:
+      - "6006:6006"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - mnist-network
+    command: tensorboard --logdir=/workspace/artifacts/logs --host=0.0.0.0 --port=6006
+
+  # Optional: PostgreSQL for experiment tracking (commented out)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: mnist-postgres
+  #   environment:
+  #     POSTGRES_USER: mnist
+  #     POSTGRES_PASSWORD: mnist123
+  #     POSTGRES_DB: mnist_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - mnist-network
+
+volumes:
+  # postgres_data:
+
+networks:
+  mnist-network:
+    driver: bridge

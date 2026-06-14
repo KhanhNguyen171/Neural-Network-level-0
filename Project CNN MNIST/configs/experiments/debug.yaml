@@ -1,10 +1,30 @@
 experiment:
-name: debug
-
-training:
-epochs: 2
+  name: debug
 
 data:
-batch_size: 8
+  data_dir: data/processed
+  batch_size: 8
+  num_workers: 0
+
+model:
+  name: mnist_cnn
+  num_classes: 10
+  hidden_features: 64
+
+training:
+  epochs: 2
+  loss: cross_entropy
+  patience: 2
+
+optimizer:
+  name: adam
+  lr: 0.001
+  weight_decay: 0.0
+
+scheduler:
+  name: none
+
+artifacts:
+  checkpoint_dir: artifacts/checkpoints
 
 # python train.py --config configs/experiments/debug.yaml
