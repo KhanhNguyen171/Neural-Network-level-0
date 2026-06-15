@@ -26,12 +26,7 @@ Nó là một **thuật toán tính toán Attention hiệu quả hơn**.
 Attention tiêu chuẩn:
 
 $$
-Attention(Q,K,V)=
-
-Softmax
-\left(
-\frac{QK^T}{\sqrt d}
-\right)V
+Attention(Q,K,V)= Softmax \left( \frac{QK^T}{\sqrt d} \right)V
 $$
 
 với:
@@ -52,10 +47,7 @@ trong đó:
 Tính ma trận điểm số:
 
 $$
-S
-=
-
-QK^T
+S = QK^T
 $$
 
 kích thước:
@@ -71,10 +63,7 @@ $$
 Tính Softmax:
 
 $$
-P
-=
-
-Softmax(S)
+P=Softmax(S)
 $$
 
 ---
@@ -84,10 +73,7 @@ $$
 Nhân với Value:
 
 $$
-O
-=
-
-PV
+O=PV
 $$
 
 ---
@@ -121,9 +107,7 @@ $$
 khi đó:
 
 $$
-N^2=
-
-67,108,864
+N^2=67,108,864
 $$
 
 phần tử.
@@ -203,19 +187,13 @@ trở thành giới hạn.
 ### Thời gian thực tế
 
 $$
-T
-\approx
-T_{IO}
-+
-T_{Compute}
+T \approx T_{IO}+T_{Compute}
 $$
 
 trong đó:
 
 $$
-T_{IO}
-\gg
-T_{Compute}
+T_{IO} \gg T_{Compute}
 $$
 
 ---
@@ -273,13 +251,7 @@ Chia ma trận thành các block.
 ### Query Block
 
 $$
-Q=
-\begin{bmatrix}
-Q_1\
-Q_2\
-\vdots\
-Q_m
-\end{bmatrix}
+Q= \begin{bmatrix} Q_1\ Q_2\ \vdots\ Q_m \end{bmatrix}
 $$
 
 ---
@@ -287,13 +259,7 @@ $$
 ### Key Block
 
 $$
-K=
-\begin{bmatrix}
-K_1\
-K_2\
-\vdots\
-K_n
-\end{bmatrix}
+K= \begin{bmatrix} K_1\ K_2\ \vdots\ K_n \end{bmatrix}
 $$
 
 ---
@@ -301,13 +267,7 @@ $$
 ### Value Block
 
 $$
-V=
-\begin{bmatrix}
-V_1\
-V_2\
-\vdots\
-V_n
-\end{bmatrix}
+V= \begin{bmatrix} V_1\ V_2\ \vdots\ V_n \end{bmatrix}
 $$
 
 ---
@@ -337,10 +297,7 @@ theo từng block.
 ### Softmax chuẩn
 
 $$
-Softmax(x_i)=
-
-\frac{e^{x_i}}
-{\sum_j e^{x_j}}
+Softmax(x_i)= \frac{e^{x_i}} {\sum_j e^{x_j}}
 $$
 
 cần biết:
@@ -380,9 +337,7 @@ Giả sử đã duyệt tới block (t).
 Lưu:
 
 $$
-m_t=
-
-\max(x)
+m_t= \max(x)
 $$
 
 ---
@@ -390,9 +345,7 @@ $$
 Khi block mới đến:
 
 $$
-m_{new}=
-
-\max(m_t,m_{block})
+m_{new}= \max(m_t,m_{block})
 $$
 
 ---
@@ -402,10 +355,7 @@ $$
 Đồng thời lưu:
 
 $$
-l_t=
-
-\sum_i
-e^{x_i-m_t}
+l_t= \sum_i e^{x_i-m_t}
 $$
 
 ---
@@ -413,12 +363,7 @@ $$
 Cập nhật:
 
 $$
-l_{new}=
-
-e^{m_t-m_{new}}l_t
-+
-\sum_j
-e^{x_j-m_{new}}
+l_{new}= e^{m_t-m_{new}}l_t + \sum_j e^{x_j-m_{new}}
 $$
 
 ---
@@ -436,10 +381,7 @@ Không cần toàn bộ vector.
 Attention Output:
 
 $$
-O
-=
-
-Softmax(S)V
+O = Softmax(S)V
 $$
 
 ---
@@ -457,17 +399,7 @@ trong lúc duyệt block.
 Nếu block mới xuất hiện:
 
 $$
-O_{new}=
-
-\frac{
-e^{m_t-m_{new}}
-l_t
-O_t
-+
-\sum_j
-e^{S_j-m_{new}}V_j
-}
-{l_{new}}
+O_{new}= \frac{ e^{m_t-m_{new}} l_t O_t + \sum_j e^{S_j-m_{new}}V_j } {l_{new}}
 $$
 
 ---
@@ -518,11 +450,7 @@ for K_block,V_block
 Tính score:
 
 $$
-S
-=
-
-Q_{block}
-K_{block}^T
+S = Q_{block} K_{block}^T
 $$
 
 ---
@@ -530,9 +458,7 @@ $$
 Tìm max:
 
 $$
-m_{block}=
-
-max(S)
+m_{block}= max(S)
 $$
 
 ---
@@ -540,9 +466,7 @@ $$
 Cập nhật:
 
 $$
-m_{new}=
-
-max(m,m_{block})
+m_{new}= max(m,m_{block})
 $$
 
 ---
@@ -550,10 +474,7 @@ $$
 Tính:
 
 $$
-P
-=
-
-e^{S-m_{new}}
+P = e^{S-m_{new}}
 $$
 
 ---
@@ -561,11 +482,7 @@ $$
 Cập nhật:
 
 $$
-l_{new}=
-
-e^{m-m_{new}}l
-+
-\sum P
+l_{new}= e^{m-m_{new}}l + \sum P
 $$
 
 ---
@@ -573,14 +490,7 @@ $$
 Cập nhật output:
 
 $$
-O_{new}=
-
-\frac{
-e^{m-m_{new}}lO
-+
-PV
-}
-{l_{new}}
+O_{new}= \frac{ e^{m-m_{new}}lO + PV } {l_{new}}
 $$
 
 ---
@@ -646,10 +556,7 @@ lần truy cập bộ nhớ.
 FlashAttention:
 
 $$
-\Theta
-\left(
-\frac{N^2d^2}{M}
-\right)
+\Theta \left( \frac{N^2d^2}{M} \right)
 $$
 
 với:

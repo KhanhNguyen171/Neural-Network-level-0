@@ -11,11 +11,7 @@ Knowledge Distillation (KD) là kỹ thuật chuyển giao tri thức từ một
 Ý tưởng cơ bản:
 
 $$
-Teacher
-\rightarrow
-Knowledge
-\rightarrow
-Student
+Teacher \rightarrow Knowledge \rightarrow Student
 $$
 
 Trong đó:
@@ -27,9 +23,7 @@ Trong đó:
 Mục tiêu:
 
 $$
-Accuracy_{Student}
-\approx
-Accuracy_{Teacher}
+Accuracy_{Student} \approx Accuracy_{Teacher}
 $$
 
 với chi phí tính toán thấp hơn.
@@ -55,11 +49,7 @@ là Student Network.
 Thông thường:
 
 $$
-|f_T|
-
-> >
-
-|f_S|
+|f_T| > > |f_S|
 $$
 
 Teacher có khả năng học được:
@@ -85,10 +75,7 @@ $$
 Loss:
 
 $$
-L
-=
-
-CE(y,\hat y)
+L=CE(y,\hat y)
 $$
 
 Student chỉ nhìn thấy:
@@ -181,12 +168,7 @@ $$
 Softmax chuẩn:
 
 $$
-p_i
-===
-
-\frac
-{e^{z_i}}
-{\sum_j e^{z_j}}
+p_i=\frac{e^{z_i}} {\sum_j e^{z_j}}
 $$
 
 Knowledge Distillation sử dụng Temperature:
@@ -200,12 +182,7 @@ $$
 Temperature Softmax:
 
 $$
-p_i(T)
-======
-
-\frac
-{e^{z_i/T}}
-{\sum_j e^{z_j/T}}
+p_i(T)= \frac {e^{z_i/T}} {\sum_j e^{z_j/T}}
 $$
 
 ---
@@ -261,24 +238,13 @@ $$
 Loss:
 
 $$
-L_{KD}
-======
-
-KL(p_T||p_S)
+L_{KD}=KL(p_T||p_S)
 $$
 
 trong đó:
 
 $$
-KL(P||Q)
-========
-
-\sum_i
-P(i)
-\log
-\frac
-{P(i)}
-{Q(i)}
+KL(P||Q)= \sum_i P(i) \log \frac {P(i)} {Q(i)}
 $$
 
 ---
@@ -296,28 +262,19 @@ Thông thường Student học đồng thời:
 Classification Loss:
 
 $$
-L_{CE} =
-
-CE(y,\hat y)
+L_{CE} = CE(y,\hat y)
 $$
 
 Distillation Loss:
 
 $$
-L_{KD} =
-
-KL(p_T,p_S)
+L_{KD} = KL(p_T,p_S)
 $$
 
 Total Loss:
 
 $$
-L
-=
-
-\alpha L_{CE}
-+
-\beta L_{KD}
+L=\alpha L_{CE} + \beta L_{KD}
 $$
 
 ---
@@ -327,9 +284,7 @@ $$
 Teacher đưa ra:
 
 $$
-y_T =
-
-argmax(p_T)
+y_T = argmax(p_T)
 $$
 
 Student học:
@@ -395,9 +350,7 @@ $$
 Loss:
 
 $$
-L_{feat} =
-
-||h_T-h_S||^2
+L_{feat} =||h_T-h_S||^2
 $$
 
 ---
@@ -425,9 +378,7 @@ $$
 Loss:
 
 $$
-L_{att} =
-
-||A_T-A_S||^2
+L_{att} =||A_T-A_S||^2
 $$
 
 ---
@@ -453,10 +404,7 @@ $$
 Loss:
 
 $$
-L
-=
-
-||R_T-R_S||
+L=||R_T-R_S||
 $$
 
 ---
@@ -476,9 +424,7 @@ Ví dụ:
 Ý tưởng:
 
 $$
-Model_{t-1}
-\rightarrow
-Model_t
+Model_{t-1} \rightarrow Model_t
 $$
 
 ---
@@ -496,12 +442,7 @@ Ví dụ:
 Teacher:
 
 $$
-\theta_t^{teacher} =
-
-m\theta_{t-1}^{teacher}
-+
-(1-m)
-\theta_t^{student}
+\theta_t^{teacher} = m\theta_{t-1}^{teacher} + (1-m) \theta_t^{student}
 $$
 
 ---
@@ -529,17 +470,13 @@ $$
 Mục tiêu:
 
 $$
-Y_S
-\approx
-Y_T
+Y_S \approx Y_T
 $$
 
 trong khi vẫn giữ:
 
 $$
-Y_S
-\approx
-Y
+Y_S \approx Y
 $$
 
 ---
@@ -561,8 +498,7 @@ $$
 Distillation tối ưu:
 
 $$
-d(\mathcal M_T,\mathcal M_S)
-\rightarrow 0
+d(\mathcal M_T,\mathcal M_S) \rightarrow 0
 $$
 
 Thay vì chỉ học nhãn.
@@ -582,13 +518,7 @@ $$
 Teacher Knowledge:
 
 $$
-Teacher
-\rightarrow
-Distillation\ Token
-\rightarrow
-Attention
-\rightarrow
-Transformer
+Teacher \rightarrow Distillation\ Token \rightarrow Attention \rightarrow Transformer
 $$
 
 Đây là bước chuyển từ:

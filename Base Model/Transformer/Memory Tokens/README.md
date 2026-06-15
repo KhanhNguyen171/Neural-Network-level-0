@@ -74,11 +74,7 @@ $$
 và:
 
 $$
-A=\text{softmax}
-\left(
-\frac{QK^T}{\sqrt d}
-\right)
-V
+A=\text{softmax} \left( \frac{QK^T}{\sqrt d} \right) V
 $$
 
 Mỗi token tương tác với toàn bộ chuỗi.
@@ -112,8 +108,7 @@ Ngoài ra thông tin chỉ được lan truyền qua nhiều tầng Transformer.
 Thêm:
 
 $$
-M=
-[m_1,m_2,\ldots,m_k]
+M= [m_1,m_2,\ldots,m_k]
 $$
 
 vào đầu chuỗi.
@@ -173,18 +168,13 @@ Memory trở thành trung tâm lưu trữ
 Sau khi ghép:
 
 $$
-H^{(0)}=
-
-[M;X]
+H^{(0)}= [M;X]
 $$
 
 Ta có:
 
 $$
-H^{(l)}=
-
-\text{TransformerLayer}
-(H^{(l-1)})
+H^{(l)}= \text{TransformerLayer} (H^{(l-1)})
 $$
 
 Attention:
@@ -204,13 +194,7 @@ $$
 và:
 
 $$
-H^{(l)}=
-
-\text{softmax}
-\left(
-\frac{QK^T}{\sqrt d}
-\right)
-V
+H^{(l)}= \text{softmax} \left( \frac{QK^T}{\sqrt d} \right) V
 $$
 
 Do Memory Tokens cũng nằm trong chuỗi nên:
@@ -241,17 +225,13 @@ Output Tokens
 Ký hiệu:
 
 $$
-M^{(l)}=
-
-[m_1^{(l)},...,m_k^{(l)}]
+M^{(l)}= [m_1^{(l)},...,m_k^{(l)}]
 $$
 
 Sau một tầng:
 
 $$
-M^{(l+1)}=
-
-f(M^{(l)},X^{(l)})
+M^{(l+1)}= f(M^{(l)},X^{(l)})
 $$
 
 Trong đó:
@@ -287,9 +267,7 @@ nhưng được học bởi Attention.
 Thông tin truyền:
 
 $$
-x_i
-\rightarrow
-x_j
+x_i \rightarrow x_j
 $$
 
 qua nhiều bước attention.
@@ -308,13 +286,7 @@ $$
 
 Thông tin truyền:
 
-$$
-x_i
-\rightarrow
-m
-\rightarrow
-x_j
-$$
+$$x_i \rightarrow m \rightarrow x_j $$
 
 Memory đóng vai trò trung tâm.
 
@@ -364,8 +336,7 @@ $$
 sang:
 
 $$
-k
-\text{ token}
+k \text{ token}
 $$
 
 với:
@@ -377,17 +348,13 @@ $$
 Thông tin:
 
 $$
-X
-\rightarrow
-M
+X \rightarrow M
 $$
 
 là quá trình:
 
 $$
-\mathbb R^{n\times d}
-\rightarrow
-\mathbb R^{k\times d}
+\mathbb R^{n\times d} \rightarrow \mathbb R^{k\times d}
 $$
 
 Memory trở thành latent representation của toàn bộ chuỗi.
@@ -433,9 +400,7 @@ X <---------------- M
 Memory đọc dữ liệu:
 
 $$
-M
-\leftarrow
-\text{Attention}(M,X)
+M \leftarrow \text{Attention}(M,X)
 $$
 
 Memory hấp thụ thông tin từ chuỗi.
@@ -447,9 +412,7 @@ Memory hấp thụ thông tin từ chuỗi.
 Token đọc dữ liệu:
 
 $$
-X
-\leftarrow
-\text{Attention}(X,M)
+X \leftarrow \text{Attention}(X,M)
 $$
 
 Chuỗi truy cập thông tin đã lưu.
@@ -459,9 +422,7 @@ Chuỗi truy cập thông tin đã lưu.
 Kết hợp:
 
 $$
-X
-\leftrightarrow
-M
+X \leftrightarrow M
 $$
 
 tạo thành cơ chế bộ nhớ khả vi (Differentiable Memory).
@@ -577,25 +538,19 @@ $$
 Segment thứ nhất:
 
 $$
-[M_0;X_1]
-\rightarrow
-M_1
+[M_0;X_1] \rightarrow M_1
 $$
 
 Segment thứ hai:
 
 $$
-[M_1;X_2]
-\rightarrow
-M_2
+[M_1;X_2] \rightarrow M_2
 $$
 
 Segment thứ ba:
 
 $$
-[M_2;X_3]
-\rightarrow
-M_3
+[M_2;X_3] \rightarrow M_3
 $$
 
 Ta thu được bộ nhớ dài hạn vượt quá context window.
@@ -656,9 +611,7 @@ $$
 thì:
 
 $$
-(4096+32)^2
-\approx
-4096^2
+(4096+32)^2 \approx 4096^2
 $$
 
 nhưng mô hình có thêm bộ nhớ toàn cục.
@@ -670,9 +623,7 @@ nhưng mô hình có thêm bộ nhớ toàn cục.
 Memory Tokens học ánh xạ:
 
 $$
-X
-\rightarrow
-M
+X \rightarrow M
 $$
 
 sao cho:
@@ -696,11 +647,7 @@ Memory trở thành biểu diễn cô đọng nhất của chuỗi.
 Tương tự:
 
 $$
-\text{Encoder}
-\rightarrow
-\text{Latent Space}
-\rightarrow
-\text{Decoder}
+\text{Encoder} \rightarrow \text{Latent Space} \rightarrow \text{Decoder}
 $$
 
 trong AutoEncoder.
@@ -762,8 +709,7 @@ Long Context LLMs
 Memory Tokens là một tập vector học được:
 
 $$
-M=
-[m_1,\ldots,m_k]
+M= [m_1,\ldots,m_k]
 $$
 
 được chèn vào chuỗi để đóng vai trò bộ nhớ khả vi.
@@ -771,11 +717,7 @@ $$
 Quá trình hoạt động:
 
 $$
-X
-\rightarrow
-M
-\rightarrow
-X
+X \rightarrow M \rightarrow X
 $$
 
 Memory:
@@ -788,15 +730,7 @@ Memory:
 Chuỗi phát triển của ý tưởng:
 
 $$
-\text{CLS Token}
-\rightarrow
-\text{Memory Tokens}
-\rightarrow
-\text{Perceiver Latents}
-\rightarrow
-\text{Recurrent Memory}
-\rightarrow
-\text{Long Context LLMs}
+\text{CLS Token} \rightarrow \text{Memory Tokens} \rightarrow \text{Perceiver Latents} \rightarrow \text{Recurrent Memory} \rightarrow \text{Long Context LLMs}
 $$
 
 Memory Tokens vì vậy là một trong những bước chuyển quan trọng từ Transformer chuẩn sang các kiến trúc bộ nhớ hiện đại trong x-transformers và các LLM thế hệ mới.

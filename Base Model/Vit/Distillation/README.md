@@ -121,12 +121,7 @@ $$
 Attention:
 
 $$
-\text{Attention}(Q,K,V) =
-
-\text{Softmax}
-\left(
-\frac{QK^T}{\sqrt d}
-\right)V
+\text{Attention}(Q,K,V) =\text{Softmax} \left( \frac{QK^T}{\sqrt d} \right)V
 $$
 
 Toàn bộ token:
@@ -201,13 +196,7 @@ $$
 Student học:
 
 $$
-L_{KD} =
-
-KL
-\left(
-f_T(x),
-f_S(x)
-\right)
+L_{KD} = KL \left( f_T(x), f_S(x) \right)
 $$
 
 Distillation chỉ xảy ra tại output logits.
@@ -247,13 +236,7 @@ $$
 tương tác với mọi patch:
 
 $$
-A_{dist}=
-\text{Softmax}
-\left(
-\frac
-{q_{dist}K^T}
-{\sqrt d}
-\right)
+A_{dist}= \text{Softmax} \left( \frac {q_{dist}K^T} {\sqrt d} \right)
 $$
 
 Thông tin teacher được tích hợp vào biểu diễn:
@@ -275,12 +258,7 @@ trong suốt quá trình attention.
 Loss tổng:
 
 $$
-L
-=
-
-L_{cls}
-+
-L_{dist}
+L=L_{cls} + L_{dist}
 $$
 
 ---
@@ -288,9 +266,7 @@ $$
 ## Classification Loss
 
 $$
-L_{cls} =
-
-CE(y_{cls},y)
+L_{cls} =CE(y_{cls},y)
 $$
 
 ---
@@ -298,17 +274,13 @@ $$
 ## Distillation Loss
 
 $$
-L_{dist} =
-
-CE(y_{dist},y_T)
+L_{dist} =CE(y_{dist},y_T)
 $$
 
 với:
 
 $$
-y_T =
-
-f_T(x)
+y_T =f_T(x)
 $$
 
 ---
@@ -316,12 +288,7 @@ $$
 ## Tổng Loss
 
 $$
-L
-=
-
-CE(y_{cls},y)
-+
-CE(y_{dist},y_T)
+L=CE(y_{cls},y)+CE(y_{dist},y_T)
 $$
 
 ---
@@ -333,9 +300,7 @@ Bài báo phát hiện một kết quả bất ngờ.
 Teacher prediction dạng one-hot:
 
 $$
-\hat y_T =
-
-\arg\max f_T(x)
+\hat y_T =\arg\max f_T(x)
 $$
 
 lại hiệu quả hơn soft-label distillation.
@@ -343,9 +308,7 @@ lại hiệu quả hơn soft-label distillation.
 Khi đó:
 
 $$
-L_{dist} =
-
-CE(y_{dist},\hat y_T)
+L_{dist} =CE(y_{dist},\hat y_T)
 $$
 
 được gọi là:
@@ -373,33 +336,17 @@ $$
 Xác suất mềm:
 
 $$
-p_T =
-
-\text{Softmax}
-\left(
-\frac{z_T}{\tau}
-\right)
+p_T =\text{Softmax}\left(\frac{z_T}{\tau}\right)
 $$
 
 $$
-p_S =
-
-\text{Softmax}
-\left(
-\frac{z_S}{\tau}
-\right)
+p_S =\text{Softmax}\left(\frac{z_S}{\tau}\right)
 $$
 
 Loss:
 
 $$
-L_{KD} =
-
-\tau^2
-KL
-(
-p_T||p_S
-)
+L_{KD} =\tau^2KL(p_T||p_S)
 $$
 
 Trong DeiT, soft distillation không vượt qua hard distillation.
@@ -425,12 +372,7 @@ $$
 được trung bình:
 
 $$
-y
-=
-
-\frac
-{y_{cls}+y_{dist}}
-{2}
+y=\frac {y_{cls}+y_{dist}} {2}
 $$
 
 ---
@@ -440,36 +382,25 @@ $$
 Distillation Token tạo thêm một vector biểu diễn:
 
 $$
-h_{dist}
-\in
-\mathbb{R}^D
+h_{dist} \in \mathbb{R}^D
 $$
 
 học:
 
 $$
-h_{dist} =
-
-f(
-x,
-\text{Teacher Knowledge}
-)
+h_{dist} =f(x,\text{Teacher Knowledge})
 $$
 
 trong khi:
 
 $$
-h_{cls} =
-
-f(x)
+h_{cls} = f(x)
 $$
 
 Do attention kết nối toàn cục:
 
 $$
-h_{dist}
-\leftrightarrow
-h_i
+h_{dist} \leftrightarrow h_i
 $$
 
 với mọi patch token.
@@ -491,15 +422,7 @@ Teacher information được lan truyền xuyên suốt toàn bộ Transformer t
 # 13. Tóm tắt
 
 $$
-\boxed{
-\text{DeiT} =
-
-\text{ViT}
-+
-\text{Distillation Token}
-+
-\text{Attention-based Distillation}
-}
+\boxed{\text{DeiT} = \text{ViT} + \text{Distillation Token} + \text{Attention-based Distillation} }
 $$
 
 Điểm cốt lõi của DeiT không phải là thay đổi kiến trúc Transformer, mà là đưa kiến thức từ Teacher Model vào trong quá trình Self-Attention thông qua một Distillation Token chuyên biệt.

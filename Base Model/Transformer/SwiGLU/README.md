@@ -8,9 +8,7 @@ Trong kiến trúc Transformer, phần lớn sự chú ý thường tập trung 
 Trong Transformer nguyên bản:
 
 $$
-FFN(x) =
-
-W_2 \phi(W_1x+b_1)+b_2
+FFN(x) = W_2 \phi(W_1x+b_1)+b_2
 $$
 
 với:
@@ -75,11 +73,7 @@ Residual
 SwiGLU thay thế trực tiếp khối:
 
 $$
-Linear
-\rightarrow
-GELU
-\rightarrow
-Linear
+Linear \rightarrow GELU \rightarrow Linear
 $$
 
 của Transformer nguyên bản.
@@ -97,28 +91,19 @@ $$
 Một MLP thông thường thực hiện:
 
 $$
-h
-=
-
-\phi(Wx)
+h = \phi(Wx)
 $$
 
 sau đó:
 
 $$
-y
-=
-
-W_oh
+y = W_oh
 $$
 
 Hay:
 
 $$
-y
-=
-
-W_o\phi(Wx)
+y=W_o\phi(Wx)
 $$
 
 Trong cấu trúc này chỉ tồn tại một luồng thông tin duy nhất.
@@ -126,9 +111,7 @@ Trong cấu trúc này chỉ tồn tại một luồng thông tin duy nhất.
 Toàn bộ quá trình học được mô tả bởi:
 
 $$
-f(x) =
-
-\phi(Wx)
+f(x) = \phi(Wx)
 $$
 
 Điều này giới hạn khả năng mô hình hóa các tương tác phức tạp giữa các đặc trưng.
@@ -140,17 +123,11 @@ $$
 Ý tưởng trung tâm của GLU là tách biểu diễn thành hai nhánh:
 
 $$
-u
-=
-
-W_u x
+u=W_u x
 $$
 
 $$
-v
-=
-
-W_v x
+v=W_v x
 $$
 
 Một nhánh đóng vai trò biểu diễn nội dung.
@@ -160,29 +137,19 @@ Nhánh còn lại đóng vai trò điều khiển.
 Đầu ra:
 
 $$
-GLU(x) =
-
-u
-\odot
-\sigma(v)
+GLU(x) = u \odot \sigma(v)
 $$
 
 hay:
 
 $$
-GLU(x) =
-
-(W_u x)
-\odot
-\sigma(W_v x)
+GLU(x) = (W_u x) \odot \sigma(W_v x)
 $$
 
 với:
 
 $$
-\sigma(x) =
-
-\frac{1}{1+e^{-x}}
+\sigma(x) = \frac{1}{1+e^{-x}}
 $$
 
 là hàm Sigmoid.
@@ -196,11 +163,7 @@ Sau GLU, nhiều biến thể được đề xuất bằng cách thay đổi hà
 ## ReGLU
 
 $$
-ReGLU(x) =
-
-(W_u x)
-\odot
-ReLU(W_v x)
+ReGLU(x) = (W_u x) \odot ReLU(W_v x)
 $$
 
 ---
@@ -208,11 +171,7 @@ $$
 ## GEGLU
 
 $$
-GEGLU(x) =
-
-(W_u x)
-\odot
-GELU(W_v x)
+GEGLU(x) = (W_u x) \odot GELU(W_v x)
 $$
 
 ---
@@ -220,11 +179,7 @@ $$
 ## SwiGLU
 
 $$
-SwiGLU(x) =
-
-(W_u x)
-\odot
-Swish(W_v x)
+SwiGLU(x) = (W_u x) \odot Swish(W_v x)
 $$
 
 ---
@@ -236,19 +191,13 @@ Swish được giới thiệu như một hàm kích hoạt trơn hơn ReLU.
 Định nghĩa:
 
 $$
-Swish(x) =
-
-x \sigma(x)
+Swish(x) = x \sigma(x)
 $$
 
 hay:
 
 $$
-Swish(x) =
-
-x
-\cdot
-\frac{1}{1+e^{-x}}
+Swish(x) = x \cdot \frac{1}{1+e^{-x}}
 $$
 
 ---
@@ -258,9 +207,7 @@ $$
 ### Liên tục
 
 $$
-Swish(x)
-\in
-C^\infty
+Swish(x) \in C^\infty
 $$
 
 khả vi tại mọi điểm.
@@ -272,9 +219,7 @@ khả vi tại mọi điểm.
 Khác với:
 
 $$
-ReLU(x) =
-
-\max(0,x)
+ReLU(x) = \max(0,x)
 $$
 
 Swish vẫn cho phép thông tin từ miền âm được lan truyền.
@@ -294,48 +239,29 @@ Không xuất hiện điểm gãy như ReLU.
 Kết hợp cơ chế GLU với Swish:
 
 $$
-u
-=
-
-W_u x
+u = W_u x
 $$
 
 $$
-v
-=
-
-W_v x
+v =W_v x
 $$
 
 Đầu ra:
 
 $$
-SwiGLU(x) =
-
-u
-\odot
-Swish(v)
+SwiGLU(x) = u \odot Swish(v)
 $$
 
 Thay định nghĩa Swish:
 
 $$
-
-u
-\odot
-(v\sigma(v))
+u \odot (v\sigma(v))
 $$
 
 suy ra:
 
 $$
-SwiGLU(x) =
-
-(W_u x)
-\odot
-(W_v x)
-\odot
-\sigma(W_v x)
+SwiGLU(x) = (W_u x) \odot (W_v x) \odot \sigma(W_v x)
 $$
 
 Đây là biểu thức toán học quan trọng nhất của SwiGLU.
@@ -353,17 +279,11 @@ $$
 Sau hai phép chiếu tuyến tính:
 
 $$
-u
-=
-
-W_u x
+u=W_u x
 $$
 
 $$
-v
-=
-
-W_v x
+v=W_v x
 $$
 
 ta thu được hai không gian đặc trưng độc lập.
@@ -387,12 +307,7 @@ mang thông tin điều khiển.
 Đầu ra cuối cùng:
 
 $$
-y
-=
-
-u
-\odot
-Swish(v)
+y=u\odot Swish(v)
 $$
 
 không còn là biến đổi tuyến tính đơn giản mà trở thành tương tác nhân giữa hai biểu diễn.
@@ -422,8 +337,7 @@ là hệ số điều chế.
 Nếu:
 
 $$
-Swish(v_i)
-\approx 0
+Swish(v_i) \approx 0
 $$
 
 thành phần thứ (i) bị triệt tiêu.
@@ -431,8 +345,7 @@ thành phần thứ (i) bị triệt tiêu.
 Nếu:
 
 $$
-Swish(v_i)
-\gg 0
+Swish(v_i) \gg 0
 $$
 
 thành phần thứ (i) được khuếch đại.
@@ -448,23 +361,13 @@ Do đó SwiGLU thực hiện một dạng lựa chọn đặc trưng động nga
 Khối FFN truyền thống:
 
 $$
-FFN(x) =
-
-W_2
-\phi(W_1x)
+FFN(x) = W_2 \phi(W_1x)
 $$
 
 Khối SwiGLU:
 
 $$
-FFN(x) =
-
-W_o
-\Big(
-(W_u x)
-\odot
-Swish(W_v x)
-\Big)
+FFN(x) = W_o \Big( (W_u x) \odot Swish(W_v x) \Big)
 $$
 
 Pipeline:
@@ -484,25 +387,19 @@ x ──────────────┤                     × ───
 Trong Transformer nguyên bản:
 
 $$
-d_{ff} =
-
-4d_{model}
+d_{ff} = 4d_{model}
 $$
 
 Ví dụ:
 
 $$
-d_{model} =
-
-4096
+d_{model} = 4096
 $$
 
 suy ra:
 
 $$
-d_{ff} =
-
-16384
+d_{ff} = 16384
 $$
 
 ---
@@ -524,10 +421,7 @@ số lượng tham số tăng lên.
 Để giữ FLOPs gần tương đương, các mô hình hiện đại thường sử dụng:
 
 $$
-d_{hidden} =
-
-\frac{8}{3}
-d_{model}
+d_{hidden} = \frac{8}{3} d_{model}
 $$
 
 thay vì:
@@ -545,40 +439,25 @@ $$
 Cho:
 
 $$
-y
-=
-
-u
-\odot
-Swish(v)
+y=u\odot Swish(v)
 $$
 
 Gradient theo nhánh nội dung:
 
 $$
-\frac{\partial y}{\partial u} =
-
-Swish(v)
+\frac{\partial y}{\partial u} = Swish(v)
 $$
 
 Gradient theo nhánh điều khiển:
 
 $$
-\frac{\partial y}{\partial v} =
-
-u
-\odot
-Swish'(v)
+\frac{\partial y}{\partial v} = u \odot Swish'(v)
 $$
 
 Trong đó:
 
 $$
-Swish'(x) =
-
-\sigma(x)
-+
-x\sigma(x)(1-\sigma(x))
+Swish'(x) = \sigma(x) + x\sigma(x)(1-\sigma(x))
 $$
 
 Do đạo hàm liên tục trên toàn bộ miền xác định nên gradient ổn định hơn ReLU.
@@ -590,10 +469,7 @@ Do đạo hàm liên tục trên toàn bộ miền xác định nên gradient �
 ## GELU
 
 $$
-h
-=
-
-GELU(Wx)
+h=GELU(Wx)
 $$
 
 Chỉ tồn tại một luồng biểu diễn.
@@ -603,12 +479,7 @@ Chỉ tồn tại một luồng biểu diễn.
 ## SwiGLU
 
 $$
-h
-=
-
-(W_u x)
-\odot
-Swish(W_v x)
+h=(W_u x) \odot Swish(W_v x)
 $$
 
 Tồn tại hai luồng:
@@ -641,9 +512,7 @@ Thay vì gộp chung trong một biểu diễn duy nhất.
 Attention chịu trách nhiệm học:
 
 $$
-Token
-\leftrightarrow
-Token
+Token \leftrightarrow Token
 $$
 
 ---
@@ -651,9 +520,7 @@ $$
 SwiGLU chịu trách nhiệm học:
 
 $$
-Feature
-\leftrightarrow
-Feature
+Feature \leftrightarrow Feature
 $$
 
 bên trong từng token.
@@ -683,43 +550,25 @@ SwiGLU là một kiến trúc Feed Forward dựa trên cơ chế Gating.
 Định nghĩa:
 
 $$
-u
-=
-
-W_u x
+u=W_u x
 $$
 
 $$
-v
-=
-
-W_v x
+v=W_v x
 $$
 
 $$
-Swish(v) =
-
-v\sigma(v)
+Swish(v) =v\sigma(v)
 $$
 
 $$
-SwiGLU(x) =
-
-u
-\odot
-Swish(v)
+SwiGLU(x) =u\odot Swish(v)
 $$
 
 hay:
 
 $$
-SwiGLU(x) =
-
-(W_u x)
-\odot
-(W_v x)
-\odot
-\sigma(W_v x)
+SwiGLU(x) = (W_u x) \odot (W_v x) \odot \sigma(W_v x)
 $$
 
 Các đặc điểm cốt lõi:

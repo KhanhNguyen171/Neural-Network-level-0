@@ -177,17 +177,13 @@ $$
 được xử lý độc lập, ta có:
 
 $$
-S_i
-\leftarrow
-M_{i-1}
+S_i \leftarrow M_{i-1}
 $$
 
 với:
 
 $$
-M_{i-1}
-=
-SG(H_{i-1})
+M_{i-1} = SG(H_{i-1})
 $$
 
 Các token trong segment hiện tại có thể attention tới:
@@ -276,9 +272,7 @@ Segment tiếp theo sử dụng memory này.
 Memory được định nghĩa:
 
 $$
-M_n^l=
-
-SG(H_{n-1}^l)
+M_n^l= SG(H_{n-1}^l)
 $$
 
 trong đó:
@@ -521,9 +515,7 @@ $$
 Transformer chuẩn:
 
 $$
-A_{ij}=
-
-q_i^T k_j
+A_{ij}= q_i^T k_j
 $$
 
 ---
@@ -531,15 +523,7 @@ $$
 Transformer-XL:
 
 $$
-A_{ij}=
-
-q_i^T k_j
-+
-q_i^T r_{i-j}
-+
-u^T k_j
-+
-v^T r_{i-j}
+A_{ij}= q_i^T k_j + q_i^T r_{i-j} + u^T k_j + v^T r_{i-j}
 $$
 
 ---
@@ -613,15 +597,7 @@ Bias vị trí.
 Tổng:
 
 $$
-A_{ij}=
-
-q_i^Tk_j
-+
-q_i^Tr_{i-j}
-+
-u^Tk_j
-+
-v^Tr_{i-j}
+A_{ij}= q_i^Tk_j + q_i^Tr_{i-j} + u^Tk_j + v^Tr_{i-j}
 $$
 
 ---
@@ -779,13 +755,7 @@ Memory-Augmented Transformer
 Transformer-XL có thể được mô tả bằng:
 
 $$
-\text{Transformer}
-+
-\text{Memory}
-+
-\text{Recurrence}
-+
-\text{Relative Position}
+\text{Transformer} + \text{Memory} + \text{Recurrence} + \text{Relative Position}
 $$
 
 Ba đóng góp nền tảng:
@@ -793,31 +763,19 @@ Ba đóng góp nền tảng:
 ### Segment-Level Recurrence
 
 $$
-H_{n-1}
-\rightarrow
-M_n
+H_{n-1} \rightarrow M_n
 $$
 
 ### Memory-Augmented Attention
 
 $$
-[M;H]
-\rightarrow
-Attention
+[M;H] \rightarrow Attention
 $$
 
 ### Relative Positional Encoding
 
 $$
-A_{ij}=
-
-q_i^Tk_j
-+
-q_i^Tr_{i-j}
-+
-u^Tk_j
-+
-v^Tr_{i-j}
+A_{ij}= q_i^Tk_j + q_i^Tr_{i-j} + u^Tk_j + v^Tr_{i-j}
 $$
 
 Transformer-XL là kiến trúc đầu tiên mở rộng Transformer vượt qua giới hạn context cố định và là nền tảng trực tiếp cho KV Cache, Streaming Transformer và các LLM dài ngữ cảnh hiện đại.

@@ -265,9 +265,7 @@ cho mọi Weight trong mạng.
 Toàn bộ Backpropagation dựa trên Chain Rule:
 
 $$
-\frac{\partial L}{\partial y}
-\cdot
-\frac{\partial y}{\partial x}
+\frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial x}
 $$
 
 Ví dụ:
@@ -276,9 +274,7 @@ $$f(g(x))$$
 
 Khi đó:
 $$
-\frac{dL}{dg}
-\cdot
-\frac{dg}{dx}
+\frac{dL}{dg} \cdot \frac{dg}{dx}
 $$
 
 Đây là nền tảng của mọi thuật toán huấn luyện Deep Learning.

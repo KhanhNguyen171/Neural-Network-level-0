@@ -33,15 +33,7 @@ Kiến trúc gốc của Transformer.
 Bao gồm:
 
 $$
-\text{Input}
-\rightarrow
-\text{Encoder}
-\rightarrow
-\text{Context}
-\rightarrow
-\text{Decoder}
-\rightarrow
-\text{Output}
+\text{Input} \rightarrow \text{Encoder} \rightarrow \text{Context} \rightarrow \text{Decoder} \rightarrow \text{Output}
 $$
 
 Ví dụ nhiệm vụ:
@@ -67,18 +59,13 @@ Chỉ sử dụng Encoder Stack.
 Quá trình:
 
 $$
-X
-\rightarrow
-Encoder
-\rightarrow
-H
+X \rightarrow Encoder \rightarrow H
 $$
 
 Trong đó:
 
 $$
-H=
-{h_1,h_2,\ldots,h_n}
+H= {h_1,h_2,\ldots,h_n}
 $$
 
 là biểu diễn ngữ nghĩa cuối cùng.
@@ -105,13 +92,7 @@ Chỉ sử dụng Decoder Stack.
 Quá trình:
 
 $$
-x_1
-\rightarrow
-x_2
-\rightarrow
-x_3
-\rightarrow
-\cdots
+x_1 \rightarrow x_2 \rightarrow x_3 \rightarrow \cdots
 $$
 
 Mỗi token chỉ nhìn thấy quá khứ:
@@ -138,24 +119,19 @@ Mục tiêu:
 Cho chuỗi đầu vào:
 
 $$
-X=
-[x_1,x_2,\ldots,x_n]
+X= [x_1,x_2,\ldots,x_n]
 $$
 
 Encoder học ánh xạ:
 
 $$
-f_\theta :
-X
-\rightarrow
-H
+f_\theta : X \rightarrow H
 $$
 
 trong đó:
 
 $$
-H=
-[h_1,h_2,\ldots,h_n]
+H= [h_1,h_2,\ldots,h_n]
 $$
 
 với:
@@ -187,9 +163,7 @@ mà còn chứa ngữ cảnh toàn bộ chuỗi.
 Biến token thành vector:
 
 $$
-x_i
-\rightarrow
-e_i
+x_i \rightarrow e_i
 $$
 
 với:
@@ -201,8 +175,7 @@ $$
 Toàn bộ chuỗi:
 
 $$
-E=
-[e_1,e_2,\ldots,e_n]
+E= [e_1,e_2,\ldots,e_n]
 $$
 
 ---
@@ -214,16 +187,13 @@ Attention không nhận biết vị trí.
 Bổ sung:
 
 $$
-P=
-[p_1,p_2,\ldots,p_n]
+P= [p_1,p_2,\ldots,p_n]
 $$
 
 Đầu vào thực tế:
 
 $$
-Z^{(0)} =
-
-E+P
+Z^{(0)} = E+P
 $$
 
 ---
@@ -267,9 +237,7 @@ $$
 ### Scaling
 
 $$
-S=
-\frac{QK^T}
-{\sqrt{d_k}}
+S= \frac{QK^T} {\sqrt{d_k}}
 $$
 
 ---
@@ -294,14 +262,7 @@ $$
 ### Attention Formula
 
 $$
-Attention(Q,K,V) =
-
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt{d_k}}
-\right)
-V
+Attention(Q,K,V) = Softmax \left( \frac{QK^T} {\sqrt{d_k}}\right) V
 $$
 
 ---
@@ -311,24 +272,19 @@ $$
 Head thứ i:
 
 $$
-head_i =
-
-Attention(Q_i,K_i,V_i)
+head_i = Attention(Q_i,K_i,V_i)
 $$
 
 Ghép:
 
 $$
-H=
-Concat(head_1,\ldots,head_h)
+H= Concat(head_1,\ldots,head_h)
 $$
 
 Projection:
 
 $$
-MHA =
-
-HW_O
+MHA = HW_O
 $$
 
 ---
@@ -336,8 +292,7 @@ $$
 ## Step 5: Residual Connection
 
 $$
-Y=
-X+MHA
+Y= X+MHA
 $$
 
 ---
@@ -345,8 +300,7 @@ $$
 ## Step 6: Layer Normalization
 
 $$
-Z=
-LayerNorm(Y)
+Z= LayerNorm(Y)
 $$
 
 ---
@@ -356,20 +310,13 @@ $$
 Mỗi token đi qua MLP.
 
 $$
-FFN(x) =
-
-W_2
-\sigma
-(W_1x+b_1)
-+b_2
+FFN(x) = W_2 \sigma (W_1x+b_1)+b_2
 $$
 
 Thông thường:
 
 $$
-d_{ff} =
-
-4d_{model}
+d_{ff} = 4d_{model}
 $$
 
 ---
@@ -377,15 +324,11 @@ $$
 ## Step 8: Residual + LayerNorm
 
 $$
-Y_2 =
-
-Z+FFN(Z)
+Y_2 = Z+FFN(Z)
 $$
 
 $$
-Output =
-
-LayerNorm(Y_2)
+Output = LayerNorm(Y_2)
 $$
 
 ---
@@ -398,32 +341,13 @@ Một Encoder Block:
 
 $$
 X
-\rightarrow
-MHA
-\rightarrow
-AddNorm
-\rightarrow
-FFN
-\rightarrow
-AddNorm
-\rightarrow
-Output
+\rightarrow MHA \rightarrow AddNorm \rightarrow FFN \rightarrow AddNorm \rightarrow Output
 $$
 
 Viết gọn:
 
 $$
-EncoderBlock(X) =
-
-LN
-\left(
-FFN
-(
-LN(X+MHA(X))
-)
-+
-LN(X+MHA(X))
-\right)
+EncoderBlock(X) = LN \left( FFN (LN(X+MHA(X))) + LN(X+MHA(X)) \right)
 $$
 
 ---
@@ -433,21 +357,15 @@ $$
 N block được xếp chồng.
 
 $$
-H^{(0)} =
-
-Embedding+PE
+H^{(0)} = Embedding+PE
 $$
 
 $$
-H^{(1)} =
-
-Encoder_1(H^{(0)})
+H^{(1)} = Encoder_1(H^{(0)})
 $$
 
 $$
-H^{(2)} =
-
-Encoder_2(H^{(1)})
+H^{(2)} = Encoder_2(H^{(1)})
 $$
 
 $$
@@ -455,9 +373,7 @@ $$
 $$
 
 $$
-H^{(L)} =
-
-Encoder_L(H^{(L-1)})
+H^{(L)} = Encoder_L(H^{(L-1)})
 $$
 
 Đầu ra cuối:
@@ -485,11 +401,7 @@ $$
 Decoder thực hiện:
 
 $$
-g_\phi
-:
-(H,Y_{<t})
-\rightarrow
-y_t
+g_\phi : (H,Y_{<t}) \rightarrow y_t
 $$
 
 Trong đó:
@@ -520,16 +432,13 @@ dựa trên:
 Cho chuỗi đầu ra đã biết:
 
 $$
-Y=
-[y_1,\ldots,y_t]
+Y= [y_1,\ldots,y_t]
 $$
 
 Embedding:
 
 $$
-D^{(0)} =
-
-Embedding(Y)+PE
+D^{(0)} = Embedding(Y)+PE
 $$
 
 ---
@@ -541,27 +450,19 @@ Khác Encoder.
 Ma trận mask:
 
 $$
-M_{ij} =
-
-\begin{cases}
-0 & j\le i\
--\infty & j>i
-\end{cases}
+M_{ij} = \begin{cases} 0 & j\le i\ -\infty & j>i \end{cases}
 $$
 
 Score:
 
 $$
-S=
-\frac{QK^T}{\sqrt{d_k}}
-+M
+S= \frac{QK^T}{\sqrt{d_k}} +M
 $$
 
 Attention:
 
 $$
-A=
-Softmax(S)
+A= Softmax(S)
 $$
 
 Token hiện tại chỉ nhìn thấy quá khứ.
@@ -571,14 +472,7 @@ Token hiện tại chỉ nhìn thấy quá khứ.
 ## Step 3: Add & Norm
 
 $$
-Z_1 =
-
-LayerNorm
-(
-D^{(0)}
-+
-MSA
-)
+Z_1 = LayerNorm(D^{(0)}+MSA)
 $$
 
 ---
@@ -616,14 +510,7 @@ từ Encoder.
 ### Cross Attention
 
 $$
-CrossAttention =
-
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt{d_k}}
-\right)
-V
+CrossAttention = Softmax\left( \frac{QK^T}{\sqrt{d_k}}\right)V
 $$
 
 Decoder truy cập toàn bộ thông tin từ Encoder.
@@ -633,14 +520,7 @@ Decoder truy cập toàn bộ thông tin từ Encoder.
 ## Step 5: Add & Norm
 
 $$
-Z_2 =
-
-LayerNorm
-(
-Z_1
-+
-CrossAttention
-)
+Z_2 = LayerNorm(Z_1+CrossAttention)
 $$
 
 ---
@@ -656,14 +536,7 @@ $$
 ## Step 7: Add & Norm
 
 $$
-Output =
-
-LayerNorm
-(
-Z_2
-+
-FFN(Z_2)
-)
+Output = LayerNorm(Z_2+FFN(Z_2))
 $$
 
 ---
@@ -675,21 +548,7 @@ $$
 Một Decoder Block:
 
 $$
-Input
-\rightarrow
-MaskedSelfAttention
-\rightarrow
-AddNorm
-\rightarrow
-CrossAttention
-\rightarrow
-AddNorm
-\rightarrow
-FFN
-\rightarrow
-AddNorm
-\rightarrow
-Output
+Input \rightarrow MaskedSelfAttention \rightarrow AddNorm \rightarrow CrossAttention \rightarrow AddNorm \rightarrow FFN \rightarrow AddNorm \rightarrow Output
 $$
 
 ---
@@ -697,15 +556,11 @@ $$
 # 10. Decoder Stack
 
 $$
-D^{(1)} =
-
-Decoder_1(D^{(0)},H)
+D^{(1)} = Decoder_1(D^{(0)},H)
 $$
 
 $$
-D^{(2)} =
-
-Decoder_2(D^{(1)},H)
+D^{(2)} = Decoder_2(D^{(1)},H)
 $$
 
 $$
@@ -713,9 +568,7 @@ $$
 $$
 
 $$
-D^{(L)} =
-
-Decoder_L(D^{(L-1)},H)
+D^{(L)} = Decoder_L(D^{(L-1)},H)
 $$
 
 ---
@@ -731,10 +584,7 @@ $$
 Chiếu sang vocabulary:
 
 $$
-z_t =
-
-D^{(L)}W_{vocab}
-+b
+z_t = D^{(L)}W_{vocab} +b
 $$
 
 ---
@@ -742,9 +592,7 @@ $$
 ## Softmax
 
 $$
-P(y_t) =
-
-Softmax(z_t)
+P(y_t) = Softmax(z_t)
 $$
 
 ---
@@ -752,17 +600,13 @@ $$
 ## Chọn Token
 
 $$
-y_t =
-
-argmax(P(y_t))
+y_t = argmax(P(y_t))
 $$
 
 hoặc
 
 $$
-y_t
-\sim
-P(y_t)
+y_t \sim P(y_t)
 $$
 
 ---
@@ -786,15 +630,7 @@ X-Transformers không thay đổi bản chất toán học của Transformer.
 Nó là framework tổng quát hóa:
 
 $$
-Transformer =
-
-Attention
-+
-Residual
-+
-Normalization
-+
-FeedForward
+Transformer = Attention + Residual + Normalization + FeedForward
 $$
 
 và mở rộng:
@@ -812,13 +648,7 @@ và mở rộng:
 Tuy nhiên mọi biến thể đều kế thừa cùng một luồng nền tảng:
 
 $$
-Input
-\rightarrow
-Attention
-\rightarrow
-FeedForward
-\rightarrow
-Representation
+Input \rightarrow Attention \rightarrow FeedForward \rightarrow Representation
 $$
 
 đối với Encoder
@@ -826,15 +656,7 @@ $$
 và
 
 $$
-Input
-\rightarrow
-MaskedAttention
-\rightarrow
-CrossAttention
-\rightarrow
-FeedForward
-\rightarrow
-Token
+Input \rightarrow MaskedAttention \rightarrow CrossAttention \rightarrow FeedForward\rightarrow Token
 $$
 
 đối với Decoder.
@@ -846,25 +668,19 @@ $$
 Encoder chịu trách nhiệm xây dựng biểu diễn ngữ nghĩa toàn cục:
 
 $$
-X
-\rightarrow
-H
+X \rightarrow H
 $$
 
 Decoder chịu trách nhiệm sinh chuỗi:
 
 $$
-(H,Y_{<t})
-\rightarrow
-Y
+(H,Y_{<t}) \rightarrow Y
 $$
 
 Toàn bộ Transformer hiện đại, từ BERT đến GPT, T5, LLaMA, Mistral hay các biến thể trong X-Transformers, đều được xây dựng từ hai khối nền tảng này:
 
 $$
-\boxed{
-Attention + FeedForward + Residual + Normalization
-}
+\boxed{Attention + FeedForward + Residual + Normalization}
 $$
 
 Sự khác biệt chủ yếu nằm ở:

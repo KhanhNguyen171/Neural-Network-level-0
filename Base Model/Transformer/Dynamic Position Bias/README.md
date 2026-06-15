@@ -11,10 +11,7 @@ Trong Transformer nguyên thủy, cơ chế Self-Attention không chứa bất k
 Attention được tính bởi:
 
 $$
-A=\operatorname{softmax}
-\left(
-\frac{QK^T}{\sqrt d}
-\right)
+A=\operatorname{softmax} \left( \frac{QK^T}{\sqrt d} \right)
 $$
 
 Nếu hoán vị toàn bộ chuỗi đầu vào, kết quả attention sẽ thay đổi tương ứng nhưng mô hình không có khả năng nhận biết vị trí tuyệt đối hay tương đối giữa các token.
@@ -212,17 +209,13 @@ $$
 Layer đầu tiên:
 
 $$
-h_1=
-
-\sigma(W_1r+b_1)
+h_1= \sigma(W_1r+b_1)
 $$
 
 Layer thứ hai:
 
 $$
-h_2=
-
-\sigma(W_2h_1+b_2)
+h_2= \sigma(W_2h_1+b_2)
 $$
 
 Output:
@@ -246,39 +239,25 @@ Mỗi attention head nhận một bias riêng.
 Attention score chuẩn:
 
 $$
-S_{ij}=
-
-\frac{q_i^Tk_j}{\sqrt d}
+S_{ij}= \frac{q_i^Tk_j}{\sqrt d}
 $$
 
 DPB bổ sung:
 
 $$
-S_{ij}=
-
-\frac{q_i^Tk_j}{\sqrt d}
-+
-B(i-j)
+S_{ij}= \frac{q_i^Tk_j}{\sqrt d} + B(i-j)
 $$
 
 hoặc cho từng head:
 
 $$
-S_{ij}^{(h)}=
-
-\frac
-{q_i^{(h)}k_j^{(h)}}
-{\sqrt d}
-+
-B_h(i-j)
+S_{ij}^{(h)}= \frac {q_i^{(h)}k_j^{(h)}} {\sqrt d} + B_h(i-j)
 $$
 
 Sau đó:
 
 $$
-A_{ij}=
-
-\operatorname{softmax}(S_{ij})
+A_{ij}= \operatorname{softmax}(S_{ij})
 $$
 
 ---
@@ -339,9 +318,7 @@ bias
 Do đó:
 
 $$
-B(7)
-\approx
-B(8)
+B(7) \approx B(8)
 $$
 
 một cách tự nhiên.
@@ -365,17 +342,13 @@ dịch thành:
 Ta có:
 
 $$
-(1-2)=
-
-(11-12)
+(1-2)= (11-12)
 $$
 
 Do đó:
 
 $$
-B(1-2)=
-
-B(11-12)
+B(1-2)= B(11-12)
 $$
 
 DPB chỉ phụ thuộc vào khoảng cách tương đối.
@@ -404,21 +377,13 @@ Head 4
 
 Tương ứng:
 
-$$
-B_1(r)
-$$
+$$B_1(r)$$
 
-$$
-B_2(r)
-$$
+$$B_2(r)$$
 
-$$
-B_3(r)
-$$
+$$B_3(r)$$
 
-$$
-B_4(r)
-$$
+$$ B_4(r) $$
 
 ---
 
@@ -441,9 +406,7 @@ $$
 T5:
 
 $$
-B_{ij}=
-
-E_{bucket(i-j)}
+B_{ij}= E_{bucket(i-j)}
 $$
 
 ```text
@@ -459,9 +422,7 @@ embedding
 DPB:
 
 $$
-B_{ij}=
-
-MLP(i-j)
+B_{ij}=MLP(i-j)
 $$
 
 ```text
@@ -513,9 +474,7 @@ ALiBi có thể xem như trường hợp đặc biệt của DPB.
 RoPE:
 
 $$
-Q,K
-\rightarrow
-Rotary(Q,K)
+Q,K \rightarrow Rotary(Q,K)
 $$
 
 Tác động lên vector biểu diễn.
@@ -523,9 +482,7 @@ Tác động lên vector biểu diễn.
 DPB:
 
 $$
-Score=
-
-QK^T+B
+Score= QK^T+B
 $$
 
 Tác động lên attention logits.
@@ -585,37 +542,25 @@ Không làm thay đổi asymptotic complexity.
 Attention chuẩn:
 
 $$
-K(x_i,x_j)=
-
-q_i^Tk_j
+K(x_i,x_j)= q_i^Tk_j
 $$
 
 DPB bổ sung:
 
 $$
-K'(x_i,x_j)=
-
-q_i^Tk_j
-+
-f(i-j)
+K'(x_i,x_j)= q_i^Tk_j + f(i-j)
 $$
 
 hay:
 
 $$
-K'=
-
-K
-+
-K_{position}
+K'= K + K_{position}
 $$
 
 Trong đó:
 
 $$
-K_{position}=
-
-f(i-j)
+K_{position}= f(i-j)
 $$
 
 là một positional kernel được học.

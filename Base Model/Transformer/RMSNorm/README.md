@@ -25,7 +25,7 @@ Từ nhận xét này, RMSNorm được đề xuất như một phiên bản đ�
 Cho vector đầu vào:
 
 $$
-x=[x_1,x_2,\ldots,x_d]
+x = [x_1, x_2, \ldots, x_d]
 $$
 
 LayerNorm thực hiện hai bước:
@@ -33,64 +33,59 @@ LayerNorm thực hiện hai bước:
 ### Bước 1: Loại bỏ giá trị trung bình
 
 $$
-\mu=\frac{1}{d}\sum_{i=1}^{d}x_i
+\mu = \frac{1}{d}\sum_{i=1}^{d}x_i
 $$
 
 $$
-x \rightarrow x-\mu
+x \rightarrow x - \mu
 $$
 
 ### Bước 2: Chuẩn hóa phương sai
 
 $$
-\sigma^2=\frac{1}{d}\sum_{i=1}^{d}(x_i-\mu)^2
+\sigma^2 = \frac{1}{d}\sum_{i=1}^{d}(x_i - \mu)^2
 $$
 
 $$
-x \rightarrow \frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}
+x \rightarrow \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
 $$
 
 Như vậy LayerNorm vừa:
 
-* Dịch chuyển vector về tâm
-* Kiểm soát độ lớn vector
+* Dịch chuyển vector về tâm.
+* Kiểm soát độ lớn vector.
 
 Tuy nhiên các nghiên cứu thực nghiệm cho thấy:
 
 > Việc kiểm soát độ lớn của vector quan trọng hơn việc đưa trung bình về 0.
 
-Điều này dẫn tới ý tưởng:
-
-Thay vì chuẩn hóa theo mean và variance, chỉ cần chuẩn hóa theo độ lớn tổng thể của vector.
+Điều này dẫn tới ý tưởng: Thay vì chuẩn hóa theo mean và variance, chỉ cần chuẩn hóa theo độ lớn tổng thể của vector.
 
 ---
 
 ## 3. Ý tưởng cốt lõi của RMSNorm
 
-RMSNorm loại bỏ hoàn toàn bước tính mean.
-
-Thay vào đó chỉ đo độ lớn của vector bằng Root Mean Square:
+RMSNorm loại bỏ hoàn toàn bước tính mean. Thay vào đó chỉ đo độ lớn của vector bằng Root Mean Square (Căn bậc hai của trung bình bình phương):
 
 $$
-RMS(x)=\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2}
+\text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2}
 $$
 
 Sau đó chuẩn hóa trực tiếp:
 
 $$
-\hat{x}=\frac{x}{RMS(x)}
+\hat{x} = \frac{x}{\text{RMS}(x)}
 $$
 
-Cuối cùng áp dụng hệ số học được:
+Cuối cùng áp dụng hệ số học được (Scale):
 
 $$
-y=\gamma \odot \hat{x}
+y = \gamma \odot \hat{x}
 $$
 
 Trong đó:
-
-* $\gamma$ là vector tham số học được
-* $\odot$ là phép nhân từng phần tử
+* $\gamma$ là vector tham số học được.
+* $\odot$ là phép nhân từng phần tử (element-wise product).
 
 Toàn bộ cơ chế của RMSNorm chỉ xoay quanh việc kiểm soát độ lớn của activation.
 
@@ -98,390 +93,206 @@ Toàn bộ cơ chế của RMSNorm chỉ xoay quanh việc kiểm soát độ l�
 
 ## 4. Công thức toán học đầy đủ
 
-Cho:
+Cho $x \in \mathbb{R}^{d}$, tính RMS kèm số epsilon ($\epsilon$) để tránh lỗi chia cho 0:
 
 $$
-x \in \mathbb{R}^{d}
+r = \sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2 + \epsilon}
 $$
 
-Tính RMS:
+Chuẩn hóa vector:
 
 $$
-r=\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2+\epsilon}
+\hat{x} = \frac{x}{r}
 $$
 
-Chuẩn hóa:
+Scale với tham số trọng số:
 
 $$
-\hat{x}=\frac{x}{r}
+y = \gamma \odot \hat{x}
 $$
 
-Scale:
+Suy ra công thức tổng quát:
 
 $$
-y=\gamma \odot \hat{x}
-$$
-
-Suy ra:
-
-$$
-RMSNorm(x)=
-\gamma \odot
-\frac{x}
-{
-\sqrt{
-\frac{1}{d}
-\sum_{i=1}^{d}
-x_i^2+\epsilon
-}
-}
+\text{RMSNorm}(x) = \gamma \odot \frac{x}{\sqrt{\frac{1}{d} \sum_{i=1}^{d} x_i^2 + \epsilon}}
 $$
 
 Khác với LayerNorm:
-
-* Không tính mean
-* Không tính variance
-* Không có bias parameter
+* Không tính mean ($\mu$).
+* Không tính variance ($\sigma^2$).
+* Không sử dụng tham số bias ($\beta$).
 
 ---
 
 ## 5. Diễn giải hình học
 
-Chuẩn Euclidean của vector:
+Chuẩn Euclidean ($L_2$ norm) của một vector được định nghĩa:
 
 $$
-|x|*2=
-\sqrt{
-\sum*{i=1}^{d}x_i^2
-}
+\|x\|_2 = \sqrt{\sum_{i=1}^{d}x_i^2}
 $$
 
-Ta có:
+Ta có mối liên hệ:
 
 $$
-RMS(x)=\frac{|x|_2}{\sqrt{d}}
+\text{RMS}(x) = \frac{\|x\|_2}{\sqrt{d}}
 $$
 
-Do đó RMSNorm có thể viết lại dưới dạng:
+Do đó RMSNorm có thể viết lại dưới dạng tỷ lệ:
 
 $$
-RMSNorm(x)
-\propto
-\frac{x}{|x|_2}
+\text{RMSNorm}(x) \propto \frac{x}{\|x\|_2}
 $$
 
-Điều này có nghĩa:
-
-RMSNorm gần tương đương với việc đưa vector lên một hypersphere có bán kính cố định.
+Điều này có nghĩa RMSNorm gần tương đương với việc đưa vector lên một hypersphere (siêu cầu) có bán kính cố định.
 
 Các đặc tính quan trọng:
+* Giữ nguyên hướng vector.
+* Điều chỉnh độ lớn vector.
+* Không thay đổi thông tin tương đối giữa các chiều biểu diễn.
 
-* Giữ nguyên hướng vector
-* Điều chỉnh độ lớn vector
-* Không thay đổi thông tin tương đối giữa các chiều
-
-Trong không gian biểu diễn, RMSNorm chủ yếu kiểm soát độ dài vector thay vì thay đổi hướng biểu diễn.
+Trong không gian biểu diễn, RMSNorm chủ yếu kiểm soát độ dài vector thay vì xoay hoặc dịch chuyển hướng biểu diễn của nó.
 
 ---
 
 ## 6. Tính chất Scale Invariance
 
-Giả sử:
+Giả sử ta scale vector đầu vào với một hệ số $c > 0$ thành $x' = cx$. Khi đó:
 
 $$
-x'=cx
-$$
-
-với:
-
-$$
-c>0
-$$
-
-Khi đó:
-
-$$
-RMS(x') =
-
-\sqrt{
-\frac{1}{d}
-\sum_{i=1}^{d}
-(cx_i)^2
-}
-$$
-
-$$
-
-c,RMS(x)
+\text{RMS}(x') = \sqrt{\frac{1}{d}\sum_{i=1}^{d}(cx_i)^2} = c \cdot \sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2} = c \cdot \text{RMS}(x)
 $$
 
 Suy ra:
 
 $$
-\frac{x'}{RMS(x')} =
-
-\frac{cx}{c,RMS(x)}
-
-\frac{x}{RMS(x)}
+\frac{x'}{\text{RMS}(x')} = \frac{cx}{c \cdot \text{RMS}(x)} = \frac{x}{\text{RMS}(x)}
 $$
 
 Do đó:
 
 $$
-RMSNorm(cx)=RMSNorm(x)
+\text{RMSNorm}(cx) = \text{RMSNorm}(x)
 $$
 
-Đây là tính chất rất quan trọng.
-
-Mô hình trở nên ít nhạy cảm hơn với độ lớn tuyệt đối của activation.
-
-Thay vào đó mô hình chủ yếu quan tâm đến hướng của vector.
+Đây là tính chất vô cùng quan trọng (Scale Invariance - Bất biến với tỷ lệ). Mô hình sẽ trở nên ít nhạy cảm hơn với độ lớn tuyệt đối của activation, thay vào đó chủ yếu tập trung học hướng của vector biểu diễn.
 
 ---
 
 ## 7. So sánh với LayerNorm
 
 ### LayerNorm
-
 $$
-LN(x) =
-
-\gamma
-\odot
-\frac{x-\mu}
-{\sqrt{\sigma^2+\epsilon}}
-+\beta
+\text{LN}(x) = \gamma \odot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta
 $$
-
-Yêu cầu:
-
-* Mean
-* Variance
-* Scale
-* Bias
-
----
+*Yêu cầu:* Mean, Variance, Scale ($\gamma$), Bias ($\beta$).
 
 ### RMSNorm
-
 $$
-RMSNorm(x) =
-
-\gamma
-\odot
-\frac{x}
-{
-\sqrt{
-\frac{1}{d}
-\sum_{i=1}^{d}x_i^2
-+\epsilon
-}
-}
+\text{RMSNorm}(x) = \gamma \odot \frac{x}{\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2 + \epsilon}}
 $$
+*Yêu cầu:* Mean Square, Scale ($\gamma$).
 
-Yêu cầu:
+### Bảng so sánh trực quan
 
-* Mean Square
-* Scale
-
----
-
-### So sánh
-
-| Thành phần        | LayerNorm | RMSNorm      |
-| ----------------- | --------- | ------------ |
-| Mean              | Có        | Không        |
-| Variance          | Có        | Không        |
-| Bias              | Có        | Không        |
-| Scale Invariance  | Một phần  | Tốt          |
-| Chi phí tính toán | Cao hơn   | Thấp hơn     |
-| LLM hiện đại      | Ít dùng   | Rất phổ biến |
+| Thành phần | LayerNorm | RMSNorm |
+| :--- | :---: | :---: |
+| **Mean ($\mu$)** | Có | Không |
+| **Variance ($\sigma^2$)** | Có | Không |
+| **Bias ($\beta$)** | Có | Không |
+| **Scale Invariance** | Một phần | Tốt |
+| **Chi phí tính toán** | Cao hơn | Thấp hơn |
+| **LLM hiện đại** | Ít dùng | Rất phổ biến |
 
 ---
 
 ## 8. RMSNorm trong Transformer
 
-Trong Transformer hiện đại, RMSNorm thường xuất hiện dưới dạng Pre-Norm.
+Trong Transformer hiện đại, RMSNorm thường xuất hiện dưới cấu trúc **Pre-Norm** (chuẩn hóa trước khi đưa vào các khối tính toán chính).
 
-### Attention Block
-
+### Khối Attention (Attention Block)
 $$
-y=
-x+
-Attention(RMSNorm(x))
+y = x + \text{Attention}(\text{RMSNorm}(x))
 $$
 
-### Feed Forward Block
-
+### Khối Feed Forward (Feed Forward Block)
 $$
-z=
-y+
-MLP(RMSNorm(y))
+z = y + \text{MLP}(\text{RMSNorm}(y))
 $$
 
-Kiến trúc này giúp:
-
-* Gradient ổn định hơn
-* Huấn luyện sâu hơn
-* Giảm nguy cơ gradient explosion
-
-Đây là cấu trúc xuất hiện trong phần lớn LLM hiện đại.
+Kiến trúc Pre-Norm này giúp:
+* Khôi phục luồng gradient ổn định hơn qua kết nối tắt (Residual Connection).
+* Hỗ trợ huấn luyện mô hình sâu hơn mà không sợ bão hòa.
+* Giảm thiểu tối đa nguy cơ bùng nổ gradient (gradient explosion).
 
 ---
 
 ## 9. Vai trò trong Self-Attention
 
-Trong Attention:
+Trong cơ chế Self-Attention, các ma trận hình chiếu được tính toán:
 
 $$
-Q=XW_Q
+Q = XW_Q, \quad K = XW_K, \quad V = XW_V
 $$
 
-$$
-K=XW_K
-$$
+Điểm số Attention ban đầu (Attention score):
 
 $$
-V=XW_V
+A = \frac{QK^T}{\sqrt{d}}
 $$
 
-Attention score:
+Nếu độ lớn của ma trận đầu vào $X$ biến động quá mạnh ($\|X\| \rightarrow \text{không ổn định}$), tích vô hướng $QK^T$ cũng sẽ dao động cực đoan. Khi đó, hàm kích hoạt $\text{Softmax}$ có thể rơi vào vùng bão hòa, khiến phân phối trọng số quá nhọn hoặc quá phẳng, làm mô hình rất khó tối ưu.
 
-$$
-A=
-\frac{QK^T}
-{\sqrt d}
-$$
-
-Nếu độ lớn của $X$ thay đổi mạnh:
-
-$$
-|X|
-\rightarrow
-\text{không ổn định}
-$$
-
-thì:
-
-$$
-QK^T
-$$
-
-cũng dao động mạnh.
-
-Khi đó Softmax có thể:
-
-* Quá nhọn
-* Quá phẳng
-* Khó tối ưu
-
-RMSNorm giúp duy trì:
-
-$$
-|X|
-\approx const
-$$
-
-Từ đó Attention ổn định hơn trong toàn bộ quá trình huấn luyện.
+RMSNorm đóng vai trò giữ cho $\|X\| \approx \text{constant}$ (hằng số), duy trì toán tử Attention luôn chạy trong vùng phân phối ổn định suốt quá trình huấn luyện.
 
 ---
 
 ## 10. Độ phức tạp tính toán
 
 ### LayerNorm
-
-Tính:
-
-$$
-\mu
-$$
-
-và
-
-$$
-\sigma^2
-$$
-
-nên cần nhiều phép cộng và truy cập bộ nhớ hơn.
-
-Độ phức tạp:
-
-$$
-O(3d)
-$$
-
----
+Do phải tính cả hai đại lượng độc lập là $\mu$ và $\sigma^2$, hệ thống cần thực hiện nhiều vòng lặp phép cộng tích lũy và tăng số lần truy cập đọc/ghi vào bộ nhớ (Memory I/O).
+* Độ phức tạp tính toán: $\mathcal{O}(3d)$
 
 ### RMSNorm
+Chỉ tính toán một đại lượng duy nhất là trung bình bình phương các phần tử $\sum x_i^2$, giúp giảm số phép toán và tối ưu luồng dữ liệu trên phần cứng GPU/TPU.
+* Độ phức tạp tính toán: $\mathcal{O}(2d)$
 
-Chỉ tính:
-
-$$
-\sum x_i^2
-$$
-
-Độ phức tạp:
-
-$$
-O(2d)
-$$
-
-Do đó RMSNorm có chi phí thấp hơn đáng kể khi:
-
-* Hidden size lớn
-* Nhiều layer
-* Batch lớn
-* Sequence dài
+Nhờ vậy, RMSNorm tiết kiệm được từ $10\%$ đến $50\%$ chi phí thời gian cho riêng thao tác cấu trúc Normalization khi cấu hình mô hình có kích thước chiều ẩn (Hidden size) lớn, chuỗi ngữ cảnh dài hoặc kiến trúc gồm hàng trăm layer.
 
 ---
 
 ## 11. Vai trò trong các LLM hiện đại
 
-Các mô hình ngôn ngữ lớn hiện nay gần như đều chuyển sang RMSNorm thay cho LayerNorm.
+Các mô hình ngôn ngữ lớn hiện nay gần như đều chuyển sang sử dụng RMSNorm làm chuẩn mặc định thay cho LayerNorm truyền thống.
 
-Lý do:
+Lý do cốt lõi:
+* Tính toán đơn giản, gọn nhẹ.
+* Ít chiếm dụng băng thông bộ nhớ (Memory-bound bottleneck) nhờ lược bỏ toán tử toán học rườm rà.
+* Tính chất bất biến tỷ lệ (Scale invariance) tốt hơn.
+* Tương thích hoàn hảo với cấu trúc Pre-Norm giúp ổn định hệ thống ở quy mô hàng tỷ đến hàng nghìn tỷ tham số.
 
-* Tính toán đơn giản hơn
-* Truy cập bộ nhớ ít hơn
-* Scale invariance tốt hơn
-* Phù hợp với Pre-Norm Transformer
-* Hoạt động ổn định ở quy mô hàng tỷ tham số
-
-RMSNorm hiện là thành phần tiêu chuẩn trong:
-
-* LLaMA
-* Mistral
-* Gemma
-* Qwen
+RMSNorm hiện là thành phần tiêu chuẩn cấu tạo nên:
+* LLaMA (Meta)
+* Mistral / Mixtral (Mistral AI)
+* Gemma (Google)
+* Qwen (Alibaba)
 * DeepSeek
-* Phi
-
-và nhiều biến thể Transformer hiện đại khác.
+* Phi (Microsoft)
 
 ---
 
 ## 12. Tóm tắt
 
-RMSNorm là một phương pháp chuẩn hóa đơn giản hóa từ LayerNorm bằng cách loại bỏ hoàn toàn bước mean-centering.
+RMSNorm là phương pháp chuẩn hóa tối giản từ LayerNorm bằng cách loại bỏ hoàn toàn bước dịch tâm dữ liệu (mean-centering).
 
 Công thức trung tâm:
 
 $$
-RMSNorm(x)=
-\gamma \odot
-\frac{x}
-{
-\sqrt{
-\frac{1}{d}
-\sum_{i=1}^{d}
-x_i^2+\epsilon
-}
-}
+\text{RMSNorm}(x) = \gamma \odot \frac{x}{\sqrt{\frac{1}{d} \sum_{i=1}^{d} x_i^2 + \epsilon}}
 $$
 
 Ý tưởng cốt lõi:
-
-> Điều quan trọng không phải đưa trung bình về 0, mà là kiểm soát độ lớn của vector biểu diễn.
+> Điều quan trọng để mạng nơ-ron sâu hội tụ ổn định không phải là việc đưa trung bình về 0, mà chính là khả năng kiểm soát chặt chẽ độ lớn (phạm vi biến thiên) của các vector biểu diễn.
 
 Các đặc tính nổi bật:
 

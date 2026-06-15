@@ -152,10 +152,12 @@ Kết quả: `[0.8, 0, 0.5]`
 Mục tiêu: `Thông tin nào cần ghi nhớ?`
 
 ### Step 1
-Tạo candidate memory: $\tilde{C}_t = \tanh (W_c [h_{t-1}, x_t] + b_c)$
+Tạo candidate memory: 
+$$\tilde{C}_t = \tanh (W_c [h_{t-1}, x_t] + b_c)$$
 
 ### Step 2
-Input Gate: $i_t = \sigma (W_i [h_{t-1}, x_t] + b_i)$
+Input Gate: 
+$$i_t = \sigma (W_i [h_{t-1}, x_t] + b_i)$$
 
 ### Step 3
 Lưu vào Cell State.

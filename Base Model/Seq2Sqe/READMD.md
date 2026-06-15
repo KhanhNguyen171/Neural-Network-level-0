@@ -102,19 +102,13 @@ $$
 Theo quy tắc chuỗi:
 
 $$
-P(Y|X)
-=
-\prod_{t=1}^{m}
-P(y_t|y_1,...,y_{t-1},X)
+P(Y|X) = \prod_{t=1}^{m} P(y_t|y_1,...,y_{t-1},X)
 $$
 
 Trong thực tế:
 
 $$
-P(Y|X)
-=
-\prod_{t=1}^{m}
-P(y_t|y_{<t},z)
+P(Y|X)=\prod_{t=1}^{m} P(y_t|y_{<t},z)
 $$
 
 với:
@@ -310,10 +304,7 @@ $$
 Tương đương cực tiểu hóa Negative Log Likelihood:
 
 $$
-L
-=
--\sum_{t=1}^{m}
-\log P(y_t^{true}|y_{<t},X)
+L = -\sum_{t=1}^{m} \log P(y_t^{true}|y_{<t},X)
 $$
 
 Trong thực tế thường sử dụng:
@@ -321,9 +312,7 @@ Trong thực tế thường sử dụng:
 ### Cross Entropy Loss
 
 $$
-L
-=
--\sum_i y_i \log(\hat y_i)
+L = -\sum_i y_i \log(\hat y_i)
 $$
 
 với:
@@ -368,9 +357,7 @@ Nhược điểm:
 Duy trì $k$ chuỗi tốt nhất.
 
 $$
-Score(Y)
-=
-\sum_t \log P(y_t)
+Score(Y)=\sum_t \log P(y_t)
 $$
 
 Ưu điểm:
@@ -507,13 +494,7 @@ Hiệu quả tính toán tốt hơn.
 Loại bỏ hoàn toàn RNN:
 
 $$
-Attention(Q,K,V)
-=
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt{d_k}}
-\right)V
+Attention(Q,K,V)=Softmax \left( \frac{QK^T} {\sqrt{d_k}} \right)V
 $$
 
 Transformer hiện là kiến trúc chủ đạo trong NLP hiện đại.

@@ -183,11 +183,7 @@ $$
 Attention Weights:
 
 $$
-A=
-Softmax
-\left(
-\frac{QK^T}{\sqrt d}
-\right)
+A= Softmax \left( \frac{QK^T}{\sqrt d} \right)
 $$
 
 ---
@@ -195,9 +191,7 @@ $$
 Output:
 
 $$
-Attention(Q,K,V) =
-
-A V
+Attention(Q,K,V) = A V
 $$
 
 ---
@@ -277,12 +271,7 @@ $$
 Attention:
 
 $$
-A=
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt d}
-\right)
+A= Softmax \left( \frac{QK^T} {\sqrt d} \right)
 $$
 
 ---
@@ -302,9 +291,7 @@ $$
 Attention Matrix:
 
 $$
-A
-\in
-\mathbb{R}^{n\times n}
+A \in \mathbb{R}^{n\times n}
 $$
 
 Mỗi phần tử:
@@ -344,9 +331,7 @@ head khác nhau.
 Head i:
 
 $$
-head_i =
-
-Attention(Q_i,K_i,V_i)
+head_i = Attention(Q_i,K_i,V_i)
 $$
 
 ---
@@ -354,8 +339,7 @@ $$
 Concatenate:
 
 $$
-H=
-Concat(head_1,\dots,head_h)
+H= Concat(head_1,\dots,head_h)
 $$
 
 ---
@@ -363,9 +347,7 @@ $$
 Projection:
 
 $$
-Output =
-
-HW_O
+Output = HW_O
 $$
 
 ---
@@ -513,12 +495,7 @@ $$
 Distillation Token cũng tham gia Attention:
 
 $$
-A=
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt d}
-\right)
+A= Softmax \left( \frac{QK^T} {\sqrt d} \right)
 $$
 
 ---
@@ -617,15 +594,7 @@ Attention là nền tảng của Transformer.
 Công thức cốt lõi:
 
 $$
-Attention(Q,K,V)
-================
-
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt d}
-\right)
-V
+Attention(Q,K,V)=Softmax \left( \frac{QK^T} {\sqrt d} \right) V
 $$
 
 Từ công thức này hình thành:

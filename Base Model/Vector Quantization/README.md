@@ -64,9 +64,7 @@ $$
 với:
 
 $$
-\hat{z}
-=
-e_k
+\hat{z} = e_k
 $$
 
 là vector gần nhất trong codebook.
@@ -98,19 +96,7 @@ Tương tự như:
 Pipeline:
 
 $$
-x
-\rightarrow
-Encoder
-\rightarrow
-z_e(x)
-\rightarrow
-Quantizer
-\rightarrow
-z_q(x)
-\rightarrow
-Decoder
-\rightarrow
-\hat{x}
+x \rightarrow Encoder \rightarrow z_e(x) \rightarrow Quantizer \rightarrow z_q(x) \rightarrow Decoder \rightarrow \hat{x}
 $$
 
 ---
@@ -120,25 +106,19 @@ $$
 Encoder ánh xạ dữ liệu đầu vào:
 
 $$
-x
-\in
-\mathbb{R}^{H\times W \times C}
+x \in \mathbb{R}^{H\times W \times C}
 $$
 
 sang latent:
 
 $$
-z_e(x)
-\in
-\mathbb{R}^{h\times w \times D}
+z_e(x) \in \mathbb{R}^{h\times w \times D}
 $$
 
 Ví dụ:
 
 $$
-256\times256\times3
-\rightarrow
-32\times32\times256
+256\times256\times3 \rightarrow 32\times32\times256
 $$
 
 Mỗi vị trí latent là một vector:
@@ -154,8 +134,7 @@ $$
 Codebook:
 
 $$
-E=
-\{e_1,e_2,...,e_K\}
+E= \{e_1,e_2,...,e_K\}
 $$
 
 với:
@@ -167,9 +146,7 @@ $$
 Viết dưới dạng ma trận:
 
 $$
-E
-\in
-\mathbb{R}^{K\times D}
+E \in \mathbb{R}^{K\times D}
 $$
 
 Ví dụ:
@@ -205,10 +182,7 @@ $$
 tìm code gần nhất:
 
 $$
-k
-=
-\arg\min_i
-\|z_e(x)-e_i\|_2
+k = \arg\min_i \|z_e(x)-e_i\|_2
 $$
 
 sau đó:
@@ -242,9 +216,7 @@ $$
 Tức là:
 
 $$
-z_e
-\rightarrow
-e_k
+z_e \rightarrow e_k
 $$
 
 ---
@@ -254,12 +226,7 @@ $$
 Sau lượng tử hóa:
 
 $$
-q(z=e_k|x)
-=
-\begin{cases}
-1,& k=\arg\min_i ||z_e(x)-e_i||_2\\
-0,& otherwise
-\end{cases}
+q(z=e_k|x) = \begin{cases} 1,& k=\arg\min_i ||z_e(x)-e_i||_2\\ 0,& otherwise \end{cases}
 $$
 
 Đây là phân phối rời rạc dạng one-hot.
@@ -267,17 +234,13 @@ $$
 Khác với VAE:
 
 $$
-q(z|x)
-=
-\mathcal N(\mu,\sigma)
+q(z|x) = \mathcal N(\mu,\sigma)
 $$
 
 VQ sử dụng:
 
 $$
-q(z|x)
-=
-Categorical(K)
+q(z|x) = Categorical(K)
 $$
 
 ---
@@ -293,33 +256,25 @@ $$
 và tái tạo:
 
 $$
-\hat{x}
-=
-Decoder(z_q)
+\hat{x} = Decoder(z_q)
 $$
 
 Mục tiêu:
 
 $$
-\hat{x}
-\approx
-x
+\hat{x} \approx x
 $$
 
 Reconstruction Loss:
 
 $$
-L_{rec}
-=
-||x-\hat{x}||^2
+L_{rec} = ||x-\hat{x}||^2
 $$
 
 hoặc
 
 $$
-L_{rec}
-=
--\log p(x|z_q)
+L_{rec} = -\log p(x|z_q)
 $$
 
 ---
@@ -329,9 +284,7 @@ $$
 Hàm lượng tử hóa:
 
 $$
-z_q
-=
-Q(z_e)
+z_q = Q(z_e)
 $$
 
 là hàm rời rạc.
@@ -339,9 +292,7 @@ là hàm rời rạc.
 Do đó:
 
 $$
-\frac{\partial z_q}{\partial z_e}
-=
-0
+\frac{\partial z_q}{\partial z_e}=0
 $$
 
 Gradient không thể truyền qua bước quantization.
@@ -355,11 +306,7 @@ Gradient không thể truyền qua bước quantization.
 VQ-VAE sử dụng:
 
 $$
-z_q
-=
-z_e
-+
-\text{sg}[e_k-z_e]
+z_q = z_e + \text{sg}[e_k-z_e]
 $$
 
 Trong đó:
@@ -379,9 +326,7 @@ $$
 Backward:
 
 $$
-\frac{\partial z_q}{\partial z_e}
-=
-1
+\frac{\partial z_q}{\partial z_e}=1
 $$
 
 nên gradient truyền trực tiếp qua encoder.
@@ -397,13 +342,7 @@ nên gradient truyền trực tiếp qua encoder.
 Loss đầy đủ:
 
 $$
-L
-=
-L_{rec}
-+
-L_{codebook}
-+
-\beta L_{commit}
+L = L_{rec} + L_{codebook} + \beta L_{commit}
 $$
 
 ---
@@ -411,9 +350,7 @@ $$
 ## Reconstruction Loss
 
 $$
-L_{rec}
-=
-||x-\hat{x}||^2
+L_{rec} = ||x-\hat{x}||^2
 $$
 
 Buộc decoder tái tạo chính xác.
@@ -423,13 +360,7 @@ Buộc decoder tái tạo chính xác.
 ## Codebook Loss
 
 $$
-L_{codebook}
-=
-||
-sg[z_e]
--
-e
-||^2
+L_{codebook} = || sg[z_e] - e ||^2
 $$
 
 Mục tiêu:
@@ -442,13 +373,7 @@ Mục tiêu:
 ## Commitment Loss
 
 $$
-L_{commit}
-=
-||
-z_e
--
-sg[e]
-||^2
+L_{commit}=||z_e-sg[e]||^2
 $$
 
 Mục tiêu:
@@ -504,9 +429,7 @@ Trong Vanilla VQ:
 Kết quả:
 
 $$
-\text{Active Codes}
-\ll
-K
+\text{Active Codes} \ll K
 $$
 
 gây:
@@ -525,28 +448,17 @@ Exponential Moving Average.
 Thay vì SGD:
 
 $$
-N_i^{(t)}
-=
-\gamma N_i^{(t-1)}
-+
-(1-\gamma)n_i
+N_i^{(t)}=\gamma N_i^{(t-1)} + (1-\gamma)n_i
 $$
 
 $$
-m_i^{(t)}
-=
-\gamma m_i^{(t-1)}
-+
-(1-\gamma)
-\sum z_e
+m_i^{(t)}= \gamma m_i^{(t-1)}+ (1-\gamma) \sum z_e
 $$
 
 Codebook:
 
 $$
-e_i
-=
-\frac{m_i}{N_i}
+e_i=\frac{m_i}{N_i}
 $$
 
 Ưu điểm:
@@ -618,9 +530,7 @@ $$
 Vocabulary size:
 
 $$
-K
-=
-L^D
+K=L^D
 $$
 
 với:

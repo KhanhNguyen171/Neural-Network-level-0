@@ -59,8 +59,7 @@ DiT gồm 4 thành phần chính:
 Ảnh được chia thành patch:
 
 $$
-x_t \in \mathbb{R}^{H \times W \times C}
-\Rightarrow \{x_1, x_2, ..., x_N\}
+x_t \in \mathbb{R}^{H \times W \times C} \Rightarrow \{x_1, x_2, ..., x_N\}
 $$
 
 Embedding:
@@ -100,8 +99,7 @@ $$
 ### Self-Attention
 
 $$
-\text{Attention}(Q,K,V) =
-\text{Softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
+\text{Attention}(Q,K,V) = \text{Softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V
 $$
 
 ---
@@ -139,11 +137,7 @@ $$
 ## 6. Loss Function
 
 $$
-\mathcal{L} =
-\mathbb{E}_{x_0, t, \epsilon}
-\left[
-\|\epsilon - \epsilon_\theta(x_t, t)\|^2
-\right]
+\mathcal{L} = \mathbb{E}_{x_0, t, \epsilon} \left[ \|\epsilon - \epsilon_\theta(x_t, t)\|^2 \right]
 $$
 
 ---
@@ -154,13 +148,7 @@ $$
 Update rule:
 
 $$
-x_{t-1} =
-\frac{1}{\sqrt{\alpha_t}}
-\left(
-x_t -
-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}}
-\hat{\epsilon}
-\right)
+x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \hat{\epsilon} \right)
 $$
 
 ---
@@ -168,10 +156,7 @@ $$
 ## 8. Classifier-Free Guidance (CFG)
 
 $$
-\epsilon =
-(1+w)\epsilon_\theta(x_t|c)
--
-w\epsilon_\theta(x_t|\varnothing)
+\epsilon =(1+w)\epsilon_\theta(x_t|c) - w\epsilon_\theta(x_t|\varnothing)
 $$
 
 ---
@@ -218,10 +203,7 @@ $$
 Reverse:
 
 $$
-dx =
-\left[
-f(x,t) - g(t)^2 \nabla_x \log p_t(x)
-\right]dt + g(t)d\bar{W}
+dx = \left[ f(x,t) - g(t)^2 \nabla_x \log p_t(x) \right]dt + g(t)d\bar{W}
 $$
 
 ---
@@ -239,7 +221,5 @@ DiT chứng minh:
 ## 13. Tóm tắt
 
 $$
-\boxed{
-\text{Diffusion} + \text{Transformer} = \text{Scalable Image Generator}
-}
+\boxed{ \text{Diffusion} + \text{Transformer} = \text{Scalable Image Generator}}
 $$

@@ -79,11 +79,7 @@ $$
 Attention:
 
 $$
-A=
-Softmax
-\left(
-\frac{QK^T}{\sqrt d}
-\right)
+A= Softmax \left( \frac{QK^T}{\sqrt d} \right)
 $$
 
 Distillation Token tương tác với:
@@ -108,15 +104,7 @@ $$
 và tìm kiếm tri thức từ các patch token:
 
 $$
-h_{dist} =
-
-Softmax
-\left(
-\frac
-{q_{dist}K^T}
-{\sqrt d}
-\right)
-V
+h_{dist} = Softmax \left( \frac {q_{dist}K^T} {\sqrt d} \right) V
 $$
 
 Do đó teacher knowledge được lan truyền xuyên suốt encoder thay vì chỉ xuất hiện ở output layer.
@@ -142,17 +130,13 @@ Transformer Encoder đồng thời phục vụ:
 ### Classification Branch
 
 $$
-L_{cls} =
-
-CE(y,\hat y)
+L_{cls} = CE(y,\hat y)
 $$
 
 ### Distillation Branch
 
 $$
-L_{dist} =
-
-CE(y_t,\hat y_t)
+L_{dist} = CE(y_t,\hat y_t)
 $$
 
 Tổng loss:
@@ -176,11 +160,7 @@ là nguồn gradient duy nhất.
 Với DeiT:
 
 $$
-\nabla_\theta L =
-
-\nabla_\theta L_{cls}
-+
-\nabla_\theta L_{dist}
+\nabla_\theta L =\nabla_\theta L_{cls} + \nabla_\theta L_{dist}
 $$
 
 Teacher tạo ra một nguồn supervision thứ hai giúp:
@@ -280,9 +260,7 @@ $$
 Thông qua Distillation Token:
 
 $$
-\mathcal M_t
-\rightarrow
-\mathcal M_s
+\mathcal M_t \rightarrow \mathcal M_s
 $$
 
 DeiT không chỉ học:
@@ -300,19 +278,13 @@ mà còn học cấu trúc biểu diễn của teacher.
 Knowledge Distillation truyền thống:
 
 $$
-Teacher
-\rightarrow
-Output
+Teacher \rightarrow Output
 $$
 
 DeiT:
 
 $$
-Teacher
-\rightarrow
-Attention
-\rightarrow
-Representation
+Teacher \rightarrow Attention \rightarrow Representation
 $$
 
 Do đó teacher ảnh hưởng tới:

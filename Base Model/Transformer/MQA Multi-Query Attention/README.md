@@ -65,23 +65,13 @@ Mỗi head có:
 Attention của head thứ i:
 
 $$
-Head_i=
-\text{Softmax}
-\left(
-\frac{Q_iK_i^T}
-{\sqrt{d_h}}
-\right)V_i
+Head_i= \text{Softmax} \left( \frac{Q_iK_i^T} {\sqrt{d_h}} \right)V_i
 $$
 
 Toàn bộ output:
 
 $$
-Y=
-\text{Concat}
-(
-Head_1,\ldots,Head_h
-)
-W_O
+Y= \text{Concat} (Head_1,\ldots,Head_h ) W_O
 $$
 
 ---
@@ -156,9 +146,7 @@ Mỗi bước suy luận đều phải truy cập toàn bộ KV Cache.
 Do đó:
 
 $$
-Memory\ Bandwidth
-\rightarrow
-Bottleneck
+Memory\ Bandwidth \rightarrow Bottleneck
 $$
 
 ---
@@ -220,12 +208,7 @@ $$
 Attention:
 
 $$
-Head_i=
-\text{Softmax}
-\left(
-\frac{Q_iK^T}
-{\sqrt{d_h}}
-\right)V
+Head_i= \text{Softmax} \left( \frac{Q_iK^T} {\sqrt{d_h}} \right)V
 $$
 
 ---
@@ -233,12 +216,7 @@ $$
 Output:
 
 $$
-Y=
-\text{Concat}
-(
-Head_1,\ldots,Head_h
-)
-W_O
+Y= \text{Concat} (Head_1,\ldots,Head_h) W_O
 $$
 
 ---
@@ -368,10 +346,7 @@ một lần.
 Tỷ lệ giảm:
 
 $$
-\frac{Lhd_h}
-{Ld_h}=
-
-h
+\frac{Lhd_h} {Ld_h}= h
 $$
 
 Nếu:
@@ -454,18 +429,15 @@ cần đọc từ bộ nhớ.
 Do đó:
 
 $$
-Bandwidth
-\downarrow
+Bandwidth \downarrow
 $$
 
 $$
-Latency
-\downarrow
+Latency \downarrow
 $$
 
 $$
-Throughput
-\uparrow
+Throughput \uparrow
 $$
 
 ---

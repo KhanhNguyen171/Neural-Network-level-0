@@ -84,15 +84,7 @@ thì thông tin lịch sử được giữ lại.
 Update Gate xác định lượng thông tin từ hidden state cũ được giữ lại.
 
 $$
-z_t =
-\sigma
-(
-W_z x_t
-+
-U_z h_{t-1}
-+
-b_z
-)
+z_t = \sigma (W_z x_t+U_z h_{t-1}+b_z)
 $$
 
 Giá trị:
@@ -113,17 +105,7 @@ $$
 Sau khi tính reset gate, GRU tạo trạng thái ứng viên:
 
 $$
-\tilde{h}_t
-=
-\tanh
-\left(
-W_h x_t
-+
-U_h
-(r_t \odot h_{t-1})
-+
-b_h
-\right)
+\tilde{h}_t = \tanh \left( W_h x_t + U_h (r_t \odot h_{t-1}) + b_h \right)
 $$
 
 Trong đó:
@@ -146,11 +128,7 @@ Hidden state cuối cùng là sự kết hợp giữa:
 - Candidate hidden state
 
 $$
-h_t
-=
-z_t \odot h_{t-1}
-+
-(1-z_t)\odot\tilde{h}_t
+h_t=z_t \odot h_{t-1}+(1-z_t)\odot\tilde{h}_t
 $$
 
 Đây là phương trình quan trọng nhất của GRU.
@@ -306,13 +284,7 @@ Các nút:
 Luồng dữ liệu:
 
 $$
-(x_t,h_{t-1})
-\rightarrow
-(r_t,z_t)
-\rightarrow
-\tilde h_t
-\rightarrow
-h_t
+(x_t,h_{t-1}) \rightarrow (r_t,z_t) \rightarrow \tilde h_t \rightarrow h_t
 $$
 
 ---
@@ -329,11 +301,7 @@ $$
 Gradient được truyền:
 
 $$
-\frac{\partial h_t}{\partial h_{t-1}}
-=
-U^T
-\cdot
-\tanh'
+\frac{\partial h_t}{\partial h_{t-1}} = U^T \cdot \tanh'
 $$
 
 Khi nhân nhiều lần:
@@ -355,20 +323,13 @@ gây Vanishing Gradient.
 Trong GRU:
 
 $$
-h_t
-=
-z_t h_{t-1}
-+
-(1-z_t)\tilde h_t
+h_t=z_t h_{t-1}+ (1-z_t)\tilde h_t
 $$
 
 Ta có:
 
 $$
-\frac{\partial h_t}
-{\partial h_{t-1}}
-\approx
-z_t
+\frac{\partial h_t} {\partial h_{t-1}} \approx z_t
 $$
 
 Khi:
@@ -416,9 +377,7 @@ $$
 Kết quả:
 
 $$
-h_t=
-[\overrightarrow h_t;
-\overleftarrow h_t]
+h_t= [\overrightarrow h_t; \overleftarrow h_t]
 $$
 
 cho phép mô hình sử dụng đồng thời ngữ cảnh quá khứ và tương lai.
