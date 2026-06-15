@@ -193,13 +193,7 @@ $$
 Chuẩn hóa thành phân phối xác suất:
 
 $$
-Attention(Q,K,V) =
-
-Softmax
-\left(
-\frac{QK^T}{\sqrt{d_k}}
-\right)
-V
+Attention(Q,K,V) = Softmax \left( \frac{QK^T}{\sqrt{d_k}} \right) V
 $$
 
 Đây là công thức cốt lõi của Transformer.
@@ -216,20 +210,11 @@ Transformer sử dụng nhiều head song song.
 
 Mỗi head:
 
-$$
-head_i =
-
-Attention(Q_i,K_i,V_i)
-$$
+$$ head_i = Attention(Q_i,K_i,V_i) $$
 
 Sau đó:
 
-$$
-MultiHead =
-
-Concat(head_1,...,head_h)
-W_O
-$$
+$$ MultiHead = Concat(head_1,...,head_h) W_O $$
 
 Lợi ích:
 
@@ -272,11 +257,7 @@ Vai trò:
 
 ## Layer Normalization
 
-$$
-LN(x) =
-
-\frac{x-\mu}{\sigma}
-$$
+$$ LN(x) = \frac{x-\mu}{\sigma} $$
 
 Vai trò:
 
@@ -289,13 +270,7 @@ Vai trò:
 
 Áp dụng độc lập trên từng token:
 
-$$
-FFN(x) =
-
-W_2
-GELU(W_1x+b_1)
-+b_2
-$$
+$$ FFN(x) = W_2 GELU(W_1x+b_1) + b_2 $$
 
 Thông thường:
 
@@ -406,12 +381,7 @@ $$
 
 Loss Function:
 
-$$
-\mathcal{L} =
-
--\sum_t
-\log P(y_t|y_{<t},x)
-$$
+$$ \mathcal{L} = -\sum_t \log P(y_t|y_{<t},x) $$
 
 ---
 
@@ -521,9 +491,7 @@ x₁, x₂, ..., xₜ₋₁
 
 Mục tiêu:
 
-$$
-P(x_t|x_{<t})
-$$
+$$ P(x_t|x_{<t}) $$
 
 ---
 
@@ -531,12 +499,7 @@ $$
 
 Causal Language Modeling
 
-$$
-\mathcal{L} =
-
--\sum_t
-\log P(x_t|x_{<t})
-$$
+$$ \mathcal{L} = -\sum_t \log P(x_t|x_{<t}) $$
 
 ---
 
