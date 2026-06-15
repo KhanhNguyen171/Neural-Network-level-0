@@ -491,7 +491,7 @@ x₁, x₂, ..., xₜ₋₁
 
 Mục tiêu:
 
-$$ P(x_t|x_{<t})$$
+$$P(x_t|x_{\lt t})$$
 
 ---
 
@@ -499,7 +499,7 @@ $$ P(x_t|x_{<t})$$
 
 Causal Language Modeling
 
-$$ \mathcal{L} = -\sum_t \log P(x_t|x_{<t}) $$
+$$\mathcal{L} = -\sum_t \log P(x_t|x_{<t})$$
 
 ---
 
