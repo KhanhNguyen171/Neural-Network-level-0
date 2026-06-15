@@ -485,7 +485,7 @@ $$P(x_t|x_{\lt t})$$
 
 Causal Language Modeling
 
-$$ \mathcal{L} = -\sum_t \log P(x_t|x_{<t}) $$
+$$ \mathcal{L} = -\sum_t \log P(x_t|x_{\lt t}) $$
 
 ---
 
