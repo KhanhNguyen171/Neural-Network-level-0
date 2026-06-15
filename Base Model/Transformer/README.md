@@ -94,23 +94,9 @@ Self-Attention không chứa thông tin vị trí.
 
 Transformer bổ sung Positional Encoding:
 
-$$
-PE(pos,2i) =
+$$PE(pos,2i) = \sin \left( \frac{pos}{10000^{2i/d_{model}}} \right)$$
 
-\sin
-\left(
-\frac{pos}{10000^{2i/d_{model}}}
-\right)
-$$
-
-$$
-PE(pos,2i+1) =
-
-\cos
-\left(
-\frac{pos}{10000^{2i/d_{model}}}
-\right)
-$$
+$$ PE(pos,2i+1) = \cos\left( \frac{pos}{10000^{2i/d_{model}}} \right)$$
 
 Mục tiêu:
 
@@ -381,7 +367,7 @@ $$
 
 Loss Function:
 
-$$ \mathcal{L} = -\sum_t \log P(y_t|y_{<t},x) $$
+$$ \mathcal{L} = -\sum_t \log P(y_t|y_{\lt t},x) $$
 
 ---
 
@@ -499,7 +485,7 @@ $$ P(x_t|x_{<t}) $$
 
 Causal Language Modeling
 
-$$ \mathcal{L} = -\sum_t \log P(x_t|x_{<t}) $$
+$$ \mathcal{L} = -\sum_t \log P(x_t|x_{\lt t}) $$
 
 ---
 
