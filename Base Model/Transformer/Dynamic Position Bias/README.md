@@ -11,7 +11,7 @@ Trong Transformer nguyên thủy, cơ chế Self-Attention không chứa bất k
 Attention được tính bởi:
 
 $$
-A=\operatorname{softmax} \left( \frac{QK^T}{\sqrt d} \right)
+A= softmax \left( \frac{QK^T}{\sqrt d} \right)
 $$
 
 Nếu hoán vị toàn bộ chuỗi đầu vào, kết quả attention sẽ thay đổi tương ứng nhưng mô hình không có khả năng nhận biết vị trí tuyệt đối hay tương đối giữa các token.
@@ -257,7 +257,7 @@ $$
 Sau đó:
 
 $$
-A_{ij}= \operatorname{softmax}(S_{ij})
+A_{ij}= softmax(S_{ij})
 $$
 
 ---

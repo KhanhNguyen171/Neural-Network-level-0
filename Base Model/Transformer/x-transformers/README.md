@@ -53,9 +53,7 @@ X-Transformers cố gắng gom toàn bộ các ý tưởng đó vào một frame
 Mục tiêu:
 
 $$
-Transformer =
-
-\text{Composable Components}
+Transformer = \text{Composable Components}
 $$
 
 ---
@@ -79,17 +77,13 @@ $$
 ### Dot Product
 
 $$
-a \cdot b =
-
-\sum_i a_i b_i
+a \cdot b = \sum_i a_i b_i
 $$
 
 ### Tensor
 
 $$
-X
-\in
-\mathbb{R}^{B \times N \times D}
+X \in \mathbb{R}^{B \times N \times D}
 $$
 
 Trong đó:
@@ -105,19 +99,13 @@ Trong đó:
 ### Softmax
 
 $$
-Softmax(z_i) =
-
-\frac{e^{z_i}}
-{\sum_j e^{z_j}}
+Softmax(z_i) = \frac{e^{z_i}} {\sum_j e^{z_j}}
 $$
 
 ### Cross Entropy
 
 $$
-L
-=
-
--\sum_i y_i \log \hat y_i
+L=-\sum_i y_i \log \hat y_i
 $$
 
 ---
@@ -129,26 +117,19 @@ Phải hiểu:
 ### Feed Forward Network
 
 $$
-FFN(x) =
-
-W_2 \sigma(W_1x)
+FFN(x) = W_2 \sigma(W_1x)
 $$
 
 ### Residual
 
 $$
-y
-=
-
-x+f(x)
+y=x+f(x)
 $$
 
 ### LayerNorm
 
 $$
-LN(x) =
-
-\frac{x-\mu}{\sigma}
+LN(x) = \frac{x-\mu}{\sigma}
 $$
 
 ---
@@ -160,14 +141,7 @@ $$
 Phải hiểu:
 
 $$
-Attention(Q,K,V) =
-
-Softmax
-\left(
-\frac{QK^T}
-{\sqrt{d_k}}
-\right)
-V
+Attention(Q,K,V) = Softmax \left( \frac{QK^T} {\sqrt{d_k}} \right) V
 $$
 
 Nếu chưa hiểu Attention thì không thể hiểu X-Transformers.
@@ -181,17 +155,13 @@ Phải hiểu:
 ### Encoder
 
 $$
-X
-\rightarrow
-H
+X \rightarrow H
 $$
 
 ### Decoder
 
 $$
-(H,Y_{<t})
-\rightarrow
-Y
+(H,Y_{<t}) \rightarrow Y
 $$
 
 vì toàn bộ framework được xây dựng từ:
@@ -207,13 +177,7 @@ vì toàn bộ framework được xây dựng từ:
 Transformer gốc:
 
 $$
-Input
-\rightarrow
-Attention
-\rightarrow
-FFN
-\rightarrow
-Output
+Input \rightarrow Attention \rightarrow FFN \rightarrow Output
 $$
 
 X-Transformers xem mỗi thành phần như một module độc lập.
@@ -221,45 +185,25 @@ X-Transformers xem mỗi thành phần như một module độc lập.
 Ví dụ:
 
 $$
-Attention
-\rightarrow
-RoPE
-\rightarrow
-FlashAttention
-\rightarrow
-MQA
-\rightarrow
-GQA
+Attention \rightarrow RoPE \rightarrow FlashAttention \rightarrow MQA \rightarrow GQA
 $$
 
 hoặc
 
 $$
-FFN
-\rightarrow
-GEGLU
-\rightarrow
-SwiGLU
-\rightarrow
-MixtureOfExperts
+FFN \rightarrow GEGLU \rightarrow SwiGLU \rightarrow MixtureOfExperts
 $$
 
 hoặc
 
 $$
-LayerNorm
-\rightarrow
-RMSNorm
-\rightarrow
-ScaleNorm
+LayerNorm \rightarrow RMSNorm \rightarrow ScaleNorm
 $$
 
 Tư tưởng chính:
 
 $$
-Transformer =
-
-\text{Plug-and-Play Components}
+Transformer = \text{Plug-and-Play Components}
 $$
 
 ---

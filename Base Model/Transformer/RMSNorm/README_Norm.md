@@ -34,28 +34,33 @@ BatchNorm thực hiện chuẩn hóa dữ liệu dọc theo chiều batch dữ l
 
 Cho một tập mini-batch $B = \{x_1, x_2, \ldots, x_m\}$, quy trình tính toán gồm:
 
-Tính giá trị trung bình (mean):
+__Tính giá trị trung bình (mean):__
+
 $$
 \mu_B = \frac{1}{m} \sum_{i=1}^{m} x_i
 $$
 
-Tính phương sai (variance):
+__Tính phương sai (variance):__
+
 $$
 \sigma_B^2 = \frac{1}{m} \sum_{i=1}^{m} (x_i - \mu_B)^2
 $$
 
-Chuẩn hóa vector:
+__Chuẩn hóa vector:__
+
 $$
 \hat{x} = \frac{x - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
 $$
 
 Scale và Shift (Tạo điều kiện khôi phục biểu diễn gốc thông qua các tham số học được):
+
 $$
 y = \gamma \hat{x} + \beta
 $$
 
 ### Tính chất
 BatchNorm ép buộc phân phối của đầu ra trung gian đạt trạng thái lý tưởng:
+
 $$
 \mathbb{E}[\hat{x}] = 0 \quad \text{và} \quad \text{Var}[\hat{x}] = 1
 $$
@@ -77,17 +82,20 @@ LayerNorm loại bỏ hoàn toàn sự phụ thuộc vào chiều Batch Dimensio
 
 Cho vector đặc trưng của một mẫu: $x = [x_1, x_2, \ldots, x_d]$.
 
-Mean:
+__Mean:__
+
 $$
 \mu = \frac{1}{d} \sum_{i=1}^{d} x_i
 $$
 
-Variance:
+__Variance:__
+
 $$
 \sigma^2 = \frac{1}{d} \sum_{i=1}^{d} (x_i - \mu)^2
 $$
 
-Chuẩn hóa:
+__Chuẩn hóa:__
+
 $$
 \text{LN}(x) = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
 $$
@@ -123,7 +131,8 @@ $$
 \sigma_g^2 = \frac{1}{m} \sum (x_i - \mu_g)^2
 $$
 
-Chuẩn hóa:
+__Chuẩn hóa:__
+
 $$
 \text{GN}(x) = \frac{x - \mu_g}{\sqrt{\sigma_g^2 + \epsilon}}
 $$
@@ -152,12 +161,14 @@ Các chứng minh thực nghiệm khẳng định rằng ta hoàn toàn có th�
 
 ### Root Mean Square (Trị hiệu dụng)
 Định nghĩa độ lớn vector thông qua trung bình bình phương:
+
 $$
 \text{RMS}(x) = \sqrt{\frac{1}{d} \sum_{i=1}^{d} x_i^2}
 $$
 
 ### Chuẩn hóa
 RMSNorm giữ nguyên vị trí vector, chỉ thực hiện thao tác scale lại biên độ tổng thể:
+
 $$
 \text{RMSNorm}(x) = \gamma \odot \frac{x}{\sqrt{\frac{1}{d} \sum_{i=1}^{d} x_i^2 + \epsilon}}
 $$
@@ -167,11 +178,13 @@ $$
 ## 7. Ý nghĩa hình học
 
 Xét chuẩn Euclidean ($L_2$ norm) của vector: $\|x\|_2 = \sqrt{\sum_i x_i^2}$. Ta có mối liên hệ mật thiết:
+
 $$
 \text{RMS}(x) = \frac{\|x\|_2}{\sqrt{d}}
 $$
 
 Do đó, ta có tỷ lệ thuận:
+
 $$
 \text{RMSNorm}(x) \propto \frac{x}{\|x\|_2}
 $$
@@ -185,16 +198,19 @@ Về mặt hình học không gian, toán tử RMSNorm thực hiện phép chi�
 ## 8. Tính chất Scale Invariance
 
 Giả sử tín hiệu đầu vào bị phóng đại lên $c$ lần ($x' = cx$ với $c > 0$). Nhờ tính chất tuyến tính của căn bậc hai, ta có:
+
 $$
 \text{RMS}(x') = c \cdot \text{RMS}(x)
 $$
 
 Khi đưa vào phương trình chuẩn hóa:
+
 $$
 \frac{x'}{\text{RMS}(x')} = \frac{cx}{c \cdot \text{RMS}(x)} = \frac{x}{\text{RMS}(x)}
 $$
 
 Do đó:
+
 $$
 \text{RMSNorm}(cx) = \text{RMSNorm}(x)
 $$
@@ -208,6 +224,7 @@ $$
 Để tối ưu hóa sâu hơn nữa cho các hệ thống phần cứng hiệu năng cao, bài báo RMSNorm đề xuất thêm một biến thể gọi là **pRMSNorm**.
 
 Thay vì quét và tính toán trên toàn bộ $d$ chiều của vector, hệ thống chỉ trích xuất một phần tỷ lệ $p\%$ số lượng chiều đầu tiên để ước lượng giá trị RMS tổng thể:
+
 $$
 \text{RMS}_p(x) = \sqrt{\frac{1}{k} \sum_{i=1}^{k} x_i^2} \quad \text{với} \quad k = p\% \times d
 $$

@@ -21,9 +21,7 @@ $$
 
 được mã hóa thành một biểu diễn ngữ nghĩa (context vector)
 
-$
-z
-$
+$$z$$
 
 sau đó được giải mã thành chuỗi đầu ra
 
@@ -78,7 +76,7 @@ $$
 Xác suất dự đoán:
 
 $$
-P(y_t|y_{<t}, z)
+P(y_t|y_{\lt t}, z)
 $$
 
 Thông qua hàm Softmax:
@@ -108,7 +106,7 @@ $$
 Trong thực tế:
 
 $$
-P(Y|X)=\prod_{t=1}^{m} P(y_t|y_{<t},z)
+P(Y|X)=\prod_{t=1}^{m} P(y_t|y_{\lt t},z)
 $$
 
 với:
@@ -304,7 +302,7 @@ $$
 Tương đương cực tiểu hóa Negative Log Likelihood:
 
 $$
-L = -\sum_{t=1}^{m} \log P(y_t^{true}|y_{<t},X)
+L = -\sum_{t=1}^{m} \log P(y_t^{true}|y_{\lt t},X)
 $$
 
 Trong thực tế thường sử dụng:

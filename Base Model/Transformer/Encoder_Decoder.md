@@ -401,7 +401,7 @@ $$
 Decoder thực hiện:
 
 $$
-g_\phi : (H,Y_{<t}) \rightarrow y_t
+g_\phi : (H,Y_{ \lt t}) \rightarrow y_t
 $$
 
 Trong đó:
@@ -674,7 +674,7 @@ $$
 Decoder chịu trách nhiệm sinh chuỗi:
 
 $$
-(H,Y_{<t}) \rightarrow Y
+(H,Y_{ \lt t}) \rightarrow Y
 $$
 
 Toàn bộ Transformer hiện đại, từ BERT đến GPT, T5, LLaMA, Mistral hay các biến thể trong X-Transformers, đều được xây dựng từ hai khối nền tảng này:
