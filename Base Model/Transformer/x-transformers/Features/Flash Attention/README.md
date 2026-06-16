@@ -37,10 +37,7 @@ Flash Attention là một thuật toán tối ưu hóa cơ chế Self-Attention 
 Khác với nhiều biến thể attention xấp xỉ (approximate attention), Flash Attention vẫn tính toán:
 
 $$
-\operatorname{Softmax}
-\left(
-\frac{QK^T}{\sqrt d}
-\right)V
+Softmax \left( \frac{QK^T}{\sqrt d} \right)V
 $$
 
 một cách **chính xác (exact attention)**.
@@ -87,7 +84,7 @@ S=QK^T
 $$
 
 $$
-P=\operatorname{Softmax}(S)
+P=Softmax(S)
 $$
 
 $$
@@ -276,7 +273,7 @@ Không cần tạo toàn bộ ma trận attention.
 Softmax thông thường:
 
 $$
-\operatorname{softmax}(x_i)=\frac {e^{x_i}} {\sum_j e^{x_j}}
+Softmax (x_i)=\frac {e^{x_i}} {\sum_j e^{x_j}}
 $$
 
 dường như yêu cầu toàn bộ vector đầu vào.
