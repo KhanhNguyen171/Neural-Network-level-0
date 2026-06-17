@@ -19,26 +19,19 @@ Trong họ Transformer hiện đại tồn tại ba kiến trúc nền tảng:
 Mục tiêu của kiến trúc Encoder-Decoder là học ánh xạ:
 
 $$
-X=(x_1,x_2,\dots,x_n)
-\rightarrow
-Y=(y_1,y_2,\dots,y_m)
+X=(x_1,x_2,\dots,x_n) \rightarrow Y=(y_1,y_2,\dots,y_m)
 $$
 
 với:
 
 $$
-P(Y|X)=
-
-\prod_{t=1}^{m}
-P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
 $$
 
 Khác với GPT:
 
 $$
-P(X)=
-
-\prod_t P(x_t|x_{<t})
+P(X)= \prod_t P(x_t|x_{<t})
 $$
 
 GPT mô hình hóa một chuỗi.
@@ -180,12 +173,7 @@ $$
 Attention:
 
 $$
-Attention(Q,K,V)=
-
-softmax
-\left(
-\frac{QK^T}{\sqrt d}
-\right)V
+Attention(Q,K,V)= softmax \left( \frac{QK^T}{\sqrt d} \right)V
 $$
 
 Mọi token đều nhìn thấy nhau.
@@ -197,17 +185,13 @@ Mọi token đều nhìn thấy nhau.
 Encoder thực hiện:
 
 $$
-X
-\rightarrow
-M
+X \rightarrow M
 $$
 
 Trong đó:
 
 $$
-M_i=
-
-f(x_1,x_2,\dots,x_n)
+M_i= f(x_1,x_2,\dots,x_n)
 $$
 
 Mỗi vector chứa:
@@ -230,10 +214,7 @@ Decoder thực hiện sinh chuỗi đầu ra tự hồi quy.
 Mục tiêu:
 
 $$
-P(Y|X)=
-
-\prod_{t=1}^{m}
-P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
 $$
 
 Tại bước:
@@ -298,24 +279,13 @@ Decoder phải sinh token tuần tự.
 Do đó cần causal mask:
 
 $$
-Mask_{ij}=
-
--\infty
-\quad
-j>i
+Mask_{ij}= -\infty \quad j>i
 $$
 
 Attention:
 
 $$
-A
-=
-
-softmax
-\left(
-\frac{QK^T+Mask}
-{\sqrt d}
-\right)V
+A=softmax \left( \frac{QK^T+Mask} {\sqrt d} \right)V
 $$
 
 Token thứ:
@@ -371,13 +341,7 @@ $$
 Attention:
 
 $$
-CrossAttention=
-
-softmax
-\left(
-\frac{QK^T}
-{\sqrt d}
-\right)V
+CrossAttention= softmax \left( \frac{QK^T} {\sqrt d} \right)V
 $$
 
 ---
@@ -423,10 +387,7 @@ Cross Attention chính là cầu nối giữa hai miền dữ liệu.
 Mã hóa đầu vào:
 
 $$
-M
-=
-
-Encoder(X)
+M = Encoder(X)
 $$
 
 ---
@@ -701,42 +662,31 @@ Encoder:
 
 $$
 M
-=
-
-Encoder(X)
+= Encoder(X)
 $$
 
 Decoder:
 
 $$
-H_t=
-
-Decoder(y_{<t},M)
+H_t= Decoder(y_{<t},M)
 $$
 
 Logits:
 
 $$
-z_t=
-
-W_oH_t+b
+z_t= W_oH_t+b
 $$
 
 Xác suất:
 
 $$
-P(y_t|y_{<t},X)=
-
-softmax(z_t)
+P(y_t|y_{<t},X)= softmax(z_t)
 $$
 
 Toàn bộ mô hình:
 
 $$
-P(Y|X)=
-
-\prod_{t=1}^{m}
-P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
 $$
 
 ---
@@ -796,10 +746,7 @@ Output
 Cả kiến trúc có thể được mô tả bởi:
 
 $$
-P(Y|X)=
-
-\prod_{t=1}^{m}
-P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
 $$
 
 Trong hệ sinh thái Transformer hiện đại:
