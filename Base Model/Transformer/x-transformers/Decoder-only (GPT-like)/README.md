@@ -12,9 +12,7 @@
 Decoder-Only Transformer mô hình hóa phân phối chuỗi ngôn ngữ:
 
 $$
-P(x_1, x_2, ..., x_T)
-=
-\prod_{t=1}^{T} P(x_t \mid x_{<t})
+P(x_1, x_2, ..., x_T) = \prod_{t=1}^{T} P(x_t \mid x_{<t})
 $$
 
 Trong đó:
@@ -113,11 +111,7 @@ $$
 ## 5.3 Causal mask
 
 $$
-M_{ij} =
-\begin{cases}
-0 & j \le i \\
--\infty & j > i
-\end{cases}
+M_{ij} = \begin{cases} 0 & j \le i \\ -\infty & j > i \end{cases}
 $$
 
 ---
@@ -211,9 +205,7 @@ $$
 # 9. RMSNorm
 
 $$
-RMS(x)
-=
-\sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}
+RMS(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}
 $$
 
 $$
@@ -336,7 +328,5 @@ Decoder-Only Transformer là:
 - nền tảng của toàn bộ GPT-style LLMs
 
 $$
-\boxed{
-\text{GPT} \equiv \text{Stack of Decoder Blocks}
-}
+\boxed{ \text{GPT} \equiv \text{Stack of Decoder Blocks} }
 $$

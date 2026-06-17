@@ -246,7 +246,7 @@ $$
 ## 5.3 Attention Distribution
 
 $$
-A=\operatorname{softmax}(S)
+A= Softmax (S)
 $$
 
 ---
@@ -272,7 +272,7 @@ $$
 Một head:
 
 $$
-head_i =Attention(Q_i,K_i,V_i)
+head_i = Attention(Q_i,K_i,V_i)
 $$
 
 N head:

@@ -1,5 +1,9 @@
 # Phụ lục B — Ví dụ về Program Representation trong DNA Search Space
 
+<p align="center"> 
+ <img src="assets/Ex_Of_Program.png" width="500"> 
+</p> 
+
 ## B.1 Mục đích của hình
 
 Hình này minh họa cách một **Subprogram** trong hệ thống DNA được biểu diễn đồng thời dưới ba dạng:

@@ -88,9 +88,9 @@ $$
 
 Trong đó:
 
-* B: Batch
-* N: Sequence Length
-* D: Hidden Dimension
+* $B$: Batch
+* $N$: Sequence Length
+* $D$: Hidden Dimension
 
 ---
 
@@ -580,19 +580,7 @@ Hiểu:
 Hầu hết LLM hiện nay có thể được mô tả như:
 
 $$
-LLM =
-
-Transformer
-+
-RoPE
-+
-RMSNorm
-+
-SwiGLU
-+
-GQA
-+
-FlashAttention
+LLM = Transformer + RoPE + RMSNorm + SwiGLU + GQA + FlashAttention
 $$
 
 Điều đặc biệt là X-Transformers chứa gần như toàn bộ các thành phần này trong cùng một framework.
@@ -608,17 +596,7 @@ Nó là một tập hợp các ý tưởng Transformer hiện đại được ch
 Tư duy cốt lõi khi học repository:
 
 $$
-Transformer =
-
-Attention
-+
-Position
-+
-Normalization
-+
-FeedForward
-+
-Residual
+Transformer = Attention + Position + Normalization + FeedForward + Residual
 $$
 
 Mọi kiến trúc mới xuất hiện trong GPT, LLaMA, T5, PaLM, Gemma, Qwen hay Mistral đều chỉ là sự thay đổi hoặc mở rộng một trong năm thành phần nền tảng này.
