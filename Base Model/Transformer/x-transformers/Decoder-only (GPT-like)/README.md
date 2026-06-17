@@ -12,7 +12,7 @@
 Decoder-Only Transformer mô hình hóa phân phối chuỗi ngôn ngữ:
 
 $$
-P(x_1, x_2, ..., x_T) = \prod_{t=1}^{T} P(x_t \mid x_{<t})
+P(x_1, x_2, ..., x_T) = \prod_{t=1}^{T} P(x_t \mid x_{\lt t})
 $$
 
 Trong đó:
@@ -23,7 +23,7 @@ Trong đó:
 Mục tiêu học:
 
 $$
-\max_\theta \sum_{t=1}^{T} \log P_\theta(x_t \mid x_{<t})
+\max_\theta \sum_{t=1}^{T} \log P_\theta(x_t \mid x_{\lt t})
 $$
 
 ---
@@ -269,7 +269,7 @@ $$
 Quá trình sinh token:
 
 $$
-x_t \sim P(x_t \mid x_{<t})
+x_t \sim P(x_t \mid x_{\lt t})
 $$
 
 Sau đó:
@@ -306,13 +306,13 @@ Softmax
 Decoder-Only Transformer xấp xỉ:
 
 $$
-P_\theta(x) = \prod_t P_\theta(x_t \mid x_{<t})
+P_\theta(x) = \prod_t P_\theta(x_t \mid x_{\lt t})
 $$
 
 với:
 
 $$
-P_\theta(x_t \mid x_{<t}) = softmax(W \cdot f_\theta(x_{<t}))
+P_\theta(x_t \mid x_{\lt t}) = softmax(W \cdot f_\theta(x_{\lt t}))
 $$
 
 ---

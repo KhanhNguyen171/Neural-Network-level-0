@@ -161,7 +161,7 @@ $$
 ### Decoder
 
 $$
-(H,Y_{<t}) \rightarrow Y
+(H,Y_{\lt t}) \rightarrow Y
 $$
 
 vì toàn bộ framework được xây dựng từ:

@@ -25,13 +25,13 @@ $$
 với:
 
 $$
-P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{\lt t},X)
 $$
 
 Khác với GPT:
 
 $$
-P(X)= \prod_t P(x_t|x_{<t})
+P(X)= \prod_t P(x_t|x_{\lt t})
 $$
 
 GPT mô hình hóa một chuỗi.
@@ -214,7 +214,7 @@ Decoder thực hiện sinh chuỗi đầu ra tự hồi quy.
 Mục tiêu:
 
 $$
-P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{\lt t},X)
 $$
 
 Tại bước:
@@ -226,7 +226,7 @@ $$
 Decoder sử dụng:
 
 $$
-y_{<t}
+y_{\lt t}
 $$
 
 và
@@ -445,7 +445,7 @@ $$
 Tiếp tục:
 
 $$
-P(y_t|y_{<t},X)
+P(y_t|y_{\lt t},X)
 $$
 
 cho đến EOS.
@@ -668,7 +668,7 @@ $$
 Decoder:
 
 $$
-H_t= Decoder(y_{<t},M)
+H_t= Decoder(y_{\lt t},M)
 $$
 
 Logits:
@@ -680,13 +680,13 @@ $$
 Xác suất:
 
 $$
-P(y_t|y_{<t},X)= softmax(z_t)
+P(y_t|y_{\lt t},X)= softmax(z_t)
 $$
 
 Toàn bộ mô hình:
 
 $$
-P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{\lt t},X)
 $$
 
 ---
@@ -746,7 +746,7 @@ Output
 Cả kiến trúc có thể được mô tả bởi:
 
 $$
-P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{<t},X)
+P(Y|X)= \prod_{t=1}^{m} P(y_t|y_{\lt t},X)
 $$
 
 Trong hệ sinh thái Transformer hiện đại:
