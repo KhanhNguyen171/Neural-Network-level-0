@@ -348,10 +348,10 @@ Head4 ───── P4
 Linear Mixing
 
 
-Head1' = b11P1+b12P2+b13P3+b14P4
-Head2' = b21P1+b22P2+b23P3+b24P4
-Head3' = b31P1+b32P2+b33P3+b34P4
-Head4' = b41P1+b42P2+b43P3+b44P4
+Head1' = b11 P1 + b12 P2 + b13 P3 + b14 P4
+Head2' = b21 P1 + b22 P2 + b23 P3 + b24 P4
+Head3' = b31 P1 + b32 P2 + b33 P3 + b34 P4
+Head4' = b41 P1 + b42 P2 + b43 P3 + b44 P4
 ```
 
 Các attention maps trở thành các tổ hợp tuyến tính của nhau.
