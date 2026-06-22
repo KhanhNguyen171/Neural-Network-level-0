@@ -2,6 +2,10 @@
 
 ## Hướng tiếp cận hình học cho mã hóa vị trí trong Transformer và nền tảng cho X-Transformers
 
+<p align="center">
+  <img src="assets/rotary.png" width="450">
+</p>
+
 ## Tóm tắt
 
 Rotary Positional Embeddings (RoPE) là một phương pháp mã hóa vị trí **không tham số (non-parametric)**, trong đó thông tin vị trí được đưa vào Transformer thông qua phép **quay hình học (rotation)** trên không gian của Query và Key.

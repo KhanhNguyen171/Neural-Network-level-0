@@ -80,7 +80,7 @@ Segment 1
 Do đó:
 
 $$
-P(x_t) \neq P(x_t|x_{<t})
+P(x_t) \neq P(x_t|x_{ \lt t})
 $$
 
 mà thực tế chỉ là:
